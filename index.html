@@ -29,8 +29,52 @@
         <button onclick="alert('Under construction - Coming Soon!')">Get Started!</button>
     </div>
 
-    <!-- Register the service worker -->
+    <h1>Save Form Data Locally</h1>
+    <form id="dataForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <button type="submit">Save Data</button>
+    </form>
+
+    <div id="output" style="margin-top: 20px;"></div>
+
     <script>
+        // Script for form
+        const form = document.getElementById('dataForm');
+        const output = document.getElementById('output');
+
+        // Load saved data on page load
+        window.onload = () => {
+            const savedName = localStorage.getItem('name');
+            const savedEmail = localStorage.getItem('email');
+
+            if (savedName || savedEmail) {
+                output.innerHTML = `<p>Saved Data:</p>
+                    <p>Name: ${savedName || 'N/A'}</p>
+                    <p>Email: ${savedEmail || 'N/A'}</p>`;
+            }
+        };
+
+        // Save data to localStorage on form submit
+        form.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent page reload
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+
+            localStorage.setItem('name', name);
+            localStorage.setItem('email', email);
+
+            output.innerHTML = `<p>Data Saved Locally:</p>
+                <p>Name: ${name}</p>
+                <p>Email: ${email}</p>`;
+        });
+
+        //Register the service worker
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/PWA-Gym/service-worker.js', { scope: '/PWA-Gym/' })
                 .then((registration) => {
