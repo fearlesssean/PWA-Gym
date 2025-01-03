@@ -1,10 +1,11 @@
 const CACHE_NAME = 'PWA-Gym-cache-v1';
+const APP_SCOPE = '/PWA-Gym/';
 const urlsToCache = [
   '/PWA-Gym/',
   '/PWA-Gym/index.html',
   '/PWA-Gym/manifest.json',
   '/PWA-Gym/icons/icon-192x192.png',
-  '/PWA-Gym/icons/icon-512x512.png'
+  '/PWA-Gym/icons/icon-512x512.png',
 ];
 
 // Install event: Cache app resources
@@ -12,40 +13,40 @@ self.addEventListener('install', (event) => {
   console.log('[Service Worker] Install');
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[Service Worker] Caching app shell');
+      console.log('[Service Worker] Caching app resources');
       return cache.addAll(urlsToCache);
     })
   );
-  self.skipWaiting(); // Activate the new service worker immediately
+  self.skipWaiting(); // Activate immediately
 });
 
 // Fetch event: Serve cached resources or fetch from network
 self.addEventListener('fetch', (event) => {
-  const { request } = event;
+  const requestUrl = new URL(event.request.url);
 
-  // Only handle GET requests (ignore POST, PUT, etc.)
-  if (request.method !== 'GET') {
+  // Only handle requests under this app's scope
+  if (!requestUrl.pathname.startsWith(APP_SCOPE)) {
+    console.log('[Service Worker] Ignoring request outside app scope:', requestUrl.pathname);
     return;
   }
 
   event.respondWith(
-    caches.match(request).then((cachedResponse) => {
+    caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
-        console.log('[Service Worker] Serving from cache:', request.url);
+        console.log('[Service Worker] Serving from cache:', requestUrl.pathname);
         return cachedResponse;
       }
 
-      console.log('[Service Worker] Fetching from network:', request.url);
-      return fetch(request)
+      console.log('[Service Worker] Fetching from network:', requestUrl.pathname);
+      return fetch(event.request)
         .then((response) => {
-          // Clone the response to cache it
           if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
+            return response; // Return uncacheable response directly
           }
 
           const responseToCache = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
-            cache.put(request, responseToCache);
+            cache.put(event.request, responseToCache);
           });
 
           return response;
@@ -76,5 +77,6 @@ self.addEventListener('activate', (event) => {
     )
   );
 
-  self.clients.claim(); // Ensure the new service worker controls all clients
+  self.clients.claim(); // Ensure control of all clients
 });
+
