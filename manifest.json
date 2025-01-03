@@ -2,18 +2,18 @@
     "name": "PWA-Gym Workout App",
     "short_name": "PWA-Gym",
     "description": "A progressive workout app.",
-    "start_url": "/PWA-Gym/",
+    "start_url": "/PWA-Gym/index.html",
     "display": "standalone",
     "background_color": "#6200ff",
     "theme_color": "#fbff00",
     "icons": [
       {
-        "src": "icons/icon-192x192.png",
+        "src": "/PWA-Gym/icons/icon-192x192.png",
         "sizes": "192x192",
         "type": "image/png"
       },
       {
-        "src": "icons/icon-512x512.png",
+        "src": "/PWA-Gym/icons/icon-512x512.png",
         "sizes": "512x512",
         "type": "image/png"
       }
