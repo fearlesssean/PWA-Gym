@@ -42,6 +42,7 @@ window.onload = () => {
                     }; +
                         `<button type="submit">Save</button>
                     </form>
+                    <hr>
                     `;
                     html_form += html;
                 } else {
