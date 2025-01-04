@@ -43,7 +43,7 @@ window.onload = () => {
                     }; +
                         `<button type="submit">Save</button>
                     </form>
-                    </div
+                    </div>
                     `;
                     html_form += html;
                 } else {
