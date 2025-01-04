@@ -27,10 +27,7 @@ window.onload = () => {
         })
         .then(data => {
             console.log('JSON Data:', data);
-            // Access individual properties
-            document.body.innerHTML += `<p>Title: ${data.A1.title}</p>`;
-            document.body.innerHTML += `<p>sets: ${data.A1.sets}</p>`;
-            document.body.innerHTML += `<p>reps: ${data.A1.reps}</p>`;
+            w3.displayObject("id01", data);
         })
         .catch(error => {
             console.error('Error fetching JSON:', error);
