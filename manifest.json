@@ -4,7 +4,7 @@
     "description": "A progressive workout app.",
     "start_url": "/PWA-Gym/index.html",
     "display": "standalone",
-    "background_color": "#6200ff",
+    "background_color": "#873dff",
     "theme_color": "#fbff00",
     "icons": [
       {
