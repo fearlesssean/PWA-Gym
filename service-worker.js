@@ -3,9 +3,9 @@ const CACHE_VERSION = 'v1';
 const CACHE_NAME = `${APP_NAME}-cache-${CACHE_VERSION}`;
 const APP_SCOPE = '/PWA-Gym/';
 const urlsToCache = [
-  '/PWA-Gym/',
-  '/PWA-Gym/index.html',
-  '/PWA-Gym/manifest.json',
+  //'/PWA-Gym/',
+  //'/PWA-Gym/index.html',
+  //'/PWA-Gym/manifest.json',
   '/PWA-Gym/icons/icon-192x192.png',
   '/PWA-Gym/icons/icon-512x512.png',
 ];
