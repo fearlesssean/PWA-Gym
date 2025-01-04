@@ -26,8 +26,29 @@ window.onload = () => {
             return response.json();
         })
         .then(data => {
-            console.log('JSON Data:', data);
-            w3.displayObject("id01", data);
+            // Iterate through the JSON keys
+            let html_form = '';
+            for (const key in data) {
+                if (data[key]?.title) { // Safely access 'title'
+                    let html = `
+                    <h1>${data[key].title}</h1>
+                    <form id="dataForm">
+                        <input id="title" type="text" name="title" value="${data[key].title}" hidden>`
+                    for (const set in data[key].reps) {
+                        html += `<div class="input-group mb-3">
+                                <span class="input-group-text">${data[key].reps[set]}x</span>
+                                <input id="set1" type="number" class="form-control" name="set1" placeholder="" required>
+                            </div>`
+                    }; +
+                        `<button type="submit">Save</button>
+                    </form>
+                    `;
+                    html_form += html;
+                } else {
+                    console.error(`Missing 'title' for key: ${key}`);
+                }
+            }
+            document.getElementById("workout-form").innerHTML = html_form;
         })
         .catch(error => {
             console.error('Error fetching JSON:', error);
