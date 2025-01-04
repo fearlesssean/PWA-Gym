@@ -1,0 +1,15 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 50px;
+    background-color: purple;
+    color: white;
+}
+
+h1 {
+    color: gold;
+}
+
+.content {
+    margin-top: 30px;
+}
