@@ -34,10 +34,10 @@ form.addEventListener('submit', (event) => {
 
     output.innerHTML = `
             <p>Data Saved Locally:</p>
-            <p>Title: ${savedTitle}</p>
-            <p>Set1: ${savedSet1}</p>
-            <p>Set2: ${savedSet2}</p>
-            <p>Set3: ${savedSet3}</p>
+            <p>Title: ${title}</p>
+            <p>Set1: ${set1}</p>
+            <p>Set2: ${set2}</p>
+            <p>Set3: ${set3}</p>
         `;
 });
 
