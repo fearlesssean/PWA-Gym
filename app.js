@@ -2,8 +2,8 @@
 const form = document.getElementById('dataForm');
 const output = document.getElementById('output');
 
-// Load saved data on page load
 window.onload = () => {
+    // Load saved data on page load
     const savedTitle = localStorage.getItem('title');
     const savedSet1 = localStorage.getItem('set1');
     const savedSet2 = localStorage.getItem('set2');
@@ -16,6 +16,25 @@ window.onload = () => {
             <p>Set2: ${savedSet2 || 'N/A'}</p>
             <p>Set3: ${savedSet3 || 'N/A'}</p>`;
     }
+
+    // fetch json file
+    fetch('workouts.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('JSON Data:', data);
+            // Access individual properties
+            document.body.innerHTML += `<p>Title: ${data.A1.title}</p>`;
+            document.body.innerHTML += `<p>sets: ${data.A1.sets}</p>`;
+            document.body.innerHTML += `<p>reps: ${data.A1.reps}</p>`;
+        })
+        .catch(error => {
+            console.error('Error fetching JSON:', error);
+        });
 };
 
 // Save data to localStorage on form submit
