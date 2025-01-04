@@ -31,9 +31,8 @@ window.onload = () => {
             for (const key in data) {
                 if (data[key]?.title) { // Safely access 'title'
                     let html = `
-                    <div class="mt-4 p-5 bg-primary text-white rounded">
                     <h1>${data[key].title}</h1>
-                    <form id="dataForm">
+                    <form id="dataForm" class="mt-4 p-5 bg-primary text-white rounded">
                         <input id="title" type="text" name="title" value="${data[key].title}" hidden>`
                     for (const set in data[key].reps) {
                         html += `<div class="input-group mb-3">
@@ -42,8 +41,7 @@ window.onload = () => {
                             </div>`
                     }; +
                         `<button type="submit">Save</button>
-                    </form>
-                    </div>
+                    </form><hr>
                     `;
                     html_form += html;
                 } else {
