@@ -30,19 +30,14 @@ window.onload = () => {
             let html_form = '';
             for (const key in data) {
                 if (data[key]?.title) { // Safely access 'title'
-                    let html = `
-                    <h1>${data[key].title}</h1>
-                    <form id="dataForm" class="mt-4 p-5 bg-primary text-white rounded">
-                        <input id="title" type="text" name="title" value="${data[key].title}" hidden>`
+                    let html = `<div class="mt-4 p-5 bg-primary text-white rounded"><h1>${data[key].title}</h1><form id="dataForm"><input id="title" type="text" name="title" value="${data[key].title}" hidden>`
                     for (const set in data[key].reps) {
-                        html += `<div class="input-group mb-3">
-                                <span class="input-group-text">${data[key].reps[set]}x</span>
-                                <input id="set1" type="number" class="form-control" name="set1" placeholder="" required>
-                            </div>`
-                    }; +
-                        `<button type="submit">Save</button>
-                    </form><hr>
-                    `;
+                        html += `
+<div class="input-group mb-3">
+    <span class="input-group-text">${data[key].reps[set]}x</span>
+    <input id="set1" type="number" class="form-control" name="set1" placeholder="" required>
+</div>`}; 
+                    html += `<button type="submit">Save</button></form></div>`;
                     html_form += html;
                 } else {
                     console.error(`Missing 'title' for key: ${key}`);
