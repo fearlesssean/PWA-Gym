@@ -31,6 +31,7 @@ window.onload = () => {
             for (const key in data) {
                 if (data[key]?.title) { // Safely access 'title'
                     let html = `
+                    <div class="mt-4 p-5 bg-primary text-white rounded">
                     <h1>${data[key].title}</h1>
                     <form id="dataForm">
                         <input id="title" type="text" name="title" value="${data[key].title}" hidden>`
@@ -42,7 +43,7 @@ window.onload = () => {
                     }; +
                         `<button type="submit">Save</button>
                     </form>
-                    <hr>
+                    </div
                     `;
                     html_form += html;
                 } else {
