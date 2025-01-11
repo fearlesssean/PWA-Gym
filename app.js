@@ -1,23 +1,12 @@
+// Initialize the database
+const dbManager = new IndexedDBManager("WorkoutDB", "logs");
+dbManager.init().then(() => console.log("Database initialized"));
+
 // Script for form
 const container = document.getElementById('workout-container');
 
 window.onload = () => {
     // Load saved data on page load
-    // Initialize the database
-    const dbManager = new IndexedDBManager("WorkoutDB", "logs");
-    dbManager.init().then(() => console.log("Database initialized"));
-
-    // Button actions
-    function addData() {
-        const title = document.getElementsByName('title').value;
-        const set1 = parseInt(document.getElementsByName('set1').value, 10);
-        const set2 = parseInt(document.getElementsByName('set2').value, 10);
-        const set3 = parseInt(document.getElementsByName('set3').value, 10);
-        const set4 = parseInt(document.getElementsByName('set4').value, 10);
-        dbManager.add({ title, set1, set2, set3, set4 }).then((id) => {
-            console.log(`Data added with ID: ${id}`);
-        });
-    }
 
     // fetch json file
     fetch('workouts.json')
@@ -131,6 +120,19 @@ window.onload = () => {
             console.error('Error fetching JSON:', error);
         });
 };
+
+// Save data to IndexedDB
+function addData() {
+    const title = document.getElementsByName('title').value;
+    const set1 = parseInt(document.getElementsByName('set1').value, 10);
+    const set2 = parseInt(document.getElementsByName('set2').value, 10);
+    const set3 = parseInt(document.getElementsByName('set3').value, 10);
+    const set4 = parseInt(document.getElementsByName('set4').value, 10);
+    dbManager.add({ title, set1, set2, set3, set4 }).then((id) => {
+        console.log(`Data added with ID: ${id}`);
+    });
+}
+
 //Register the service worker
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/PWA-Gym/service-worker.js', { scope: '/PWA-Gym/' })
