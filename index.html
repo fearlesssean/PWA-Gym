@@ -17,8 +17,18 @@
     <h1>Welcome to PWA-Gym</h1>
     <p>This is a workout app to track your progress and guide you with progressive workout cycles.</p>
     <div class="content">
-        <button onclick="alert('Under construction - Coming Soon!')">Get Started!</button>
+        <button class="btn btn-warning mb-3" onclick="alert('Under construction - Coming Soon!')">Get Started!</button>
     </div>
+    <div class="input-group mt-2">
+        <span class="input-group-text">Day</span>
+        <select id="select-day" class="form-select" type="text" name="select-day">
+            <option selected>Monday</option>
+            <option>Tuesday</option>
+            <option>Thursday</option>
+            <option>Friday</option>
+        </select>
+    </div>
+    <button id="day-btn" class="btn btn-warning mt-3">Update</button>
     <hr>
     <div class="container my-5">
         <div id="workout-container" class="row g-4"></div>
