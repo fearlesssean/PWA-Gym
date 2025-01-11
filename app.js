@@ -121,17 +121,29 @@ window.onload = () => {
         });
 };
 
-// Save data to IndexedDB
 function addData() {
     const title = document.querySelector('[name="title"]').value;
     const set1 = parseInt(document.querySelector('[name="set1"]').value, 10);
     const set2 = parseInt(document.querySelector('[name="set2"]').value, 10);
     const set3 = parseInt(document.querySelector('[name="set3"]').value, 10);
     const set4 = parseInt(document.querySelector('[name="set4"]').value, 10);
-    dbManager.add({ title, set1, set2, set3, set4 }).then((id) => {
+    const set5 = parseInt(document.querySelector('[name="set5"]').value, 10);
+    const set6 = parseInt(document.querySelector('[name="set6"]').value, 10);
+
+    // Only include sets that are valid numbers
+    const data = { title };
+    if (!isNaN(set1)) data.set1 = set1;
+    if (!isNaN(set2)) data.set2 = set2;
+    if (!isNaN(set3)) data.set3 = set3;
+    if (!isNaN(set4)) data.set4 = set4;
+    if (!isNaN(set5)) data.set5 = set5;
+    if (!isNaN(set6)) data.set5 = set6;
+
+    dbManager.add(data).then((id) => {
         console.log(`Data added with ID: ${id}`);
     });
 }
+
 
 //Register the service worker
 if ('serviceWorker' in navigator) {
