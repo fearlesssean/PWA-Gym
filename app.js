@@ -120,27 +120,27 @@ window.onload = () => {
         .catch(error => {
             console.error('Error fetching JSON:', error);
         });
+    // Add Data to IndexedDB
+    function addData() {
+        const fields = ["title", "set1", "set2", "set3", "set4", "set5", "set6"];
+        const data = {};
+
+        fields.forEach((field) => {
+            const element = document.querySelector(`[name="${field}"]`);
+            if (element) {
+                const value = field === "title" ? element.value : parseInt(element.value, 10);
+                if (field === "title" || !isNaN(value)) {
+                    data[field] = value;
+                }
+            }
+        });
+
+        dbManager.add(data).then((id) => {
+            console.log(`Data added with ID: ${id}`);
+        });
+    }
 };
 
-// Add Data to IndexedDB
-function addData() {
-    const fields = ["title", "set1", "set2", "set3", "set4", "set5", "set6"];
-    const data = {};
-
-    fields.forEach((field) => {
-        const element = document.querySelector(`[name="${field}"]`);
-        if (element) {
-            const value = field === "title" ? element.value : parseInt(element.value, 10);
-            if (field === "title" || !isNaN(value)) {
-                data[field] = value;
-            }
-        }
-    });
-
-    dbManager.add(data).then((id) => {
-        console.log(`Data added with ID: ${id}`);
-    });
-}
 
 //Register the service worker
 if ('serviceWorker' in navigator) {
