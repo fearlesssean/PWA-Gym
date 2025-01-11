@@ -3,10 +3,21 @@ const container = document.getElementById('workout-container');
 
 window.onload = () => {
     // Load saved data on page load
-    const savedTitle = localStorage.getItem('title');
-    const savedSet1 = localStorage.getItem('set1');
-    const savedSet2 = localStorage.getItem('set2');
-    const savedSet3 = localStorage.getItem('set3');
+    // Initialize the database
+    const dbManager = new IndexedDBManager("WorkoutDB", "logs");
+    dbManager.init().then(() => console.log("Database initialized"));
+
+    // Button actions
+    function addData() {
+        const title = document.getElementsByName('title').value;
+        const set1 = parseInt(document.getElementsByName('set1').value, 10);
+        const set2 = parseInt(document.getElementsByName('set2').value, 10);
+        const set3 = parseInt(document.getElementsByName('set3').value, 10);
+        const set4 = parseInt(document.getElementsByName('set4').value, 10);
+        dbManager.add({ title, set1, set2, set3, set4 }).then((id) => {
+            console.log(`Data added with ID: ${id}`);
+        });
+    }
 
     // fetch json file
     fetch('workouts.json')
@@ -82,11 +93,11 @@ window.onload = () => {
                         input.value = Math.round(exercise.percents[rep] * 100 / 5) * 5 || '';
                     }
                     input.classList.add('form-control');
-                    
+
                     const span2 = document.createElement('span');
                     span2.textContent = '.lbs';
                     span2.classList.add('input-group-text');
-                    
+
                     inputGroup.appendChild(span1);
                     inputGroup.appendChild(input);
                     inputGroup.appendChild(span2);
@@ -103,7 +114,7 @@ window.onload = () => {
                 submitButton.classList.add('btn', 'btn-warning', 'mt-3');
                 submitButton.addEventListener('click', (event) => {
                     event.preventDefault();
-                    saveData();
+                    addData();
                 });
                 form.appendChild(submitButton);
 
@@ -115,41 +126,11 @@ window.onload = () => {
                 // Append the card to the container
                 container.appendChild(col);
             };
-})
-        .catch (error => {
-    console.error('Error fetching JSON:', error);
-});
+        })
+        .catch(error => {
+            console.error('Error fetching JSON:', error);
+        });
 };
-
-// Save data to IndexedDB
-function saveData() {
-    const title = document.getElementsByName('title').value;
-    const set1 = document.getElementsByName('set1').value;
-    const set2 = document.getElementsByName('set2').value;
-    const set3 = document.getElementsByName('set3').value;
-
-    const dbPromise = window.indexedDB.open('workoutDB', 1);
-
-    dbPromise.onsuccess = (event) => {
-        const db = event.target.result;
-        const transaction = db.transaction(['workouts'], 'readwrite');
-        const store = transaction.objectStore('workouts');
-
-        const workout = {
-            title: title,
-            set1: set1,
-            set2: set2,
-            set3: set3
-        };
-
-        store.add(workout);
-    };
-
-    dbPromise.onerror = (event) => {
-        console.error('Error opening IndexedDB:', event.target.error);
-    };
-}
-
 //Register the service worker
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/PWA-Gym/service-worker.js', { scope: '/PWA-Gym/' })
