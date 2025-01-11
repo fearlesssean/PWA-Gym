@@ -124,10 +124,10 @@ window.onload = () => {
 // Save data to IndexedDB
 function addData() {
     const title = document.querySelector('[name="title"]').value;
-    const set1 = parseInt(document.querySelector(name="set1").value, 10);
-    const set2 = parseInt(document.querySelector(name="set2").value, 10);
-    const set3 = parseInt(document.querySelector(name="set3").value, 10);
-    const set4 = parseInt(document.querySelector(name="set4").value, 10);
+    const set1 = parseInt(document.querySelector('[name="set1"]').value, 10);
+    const set2 = parseInt(document.querySelector('[name="set2"]').value, 10);
+    const set3 = parseInt(document.querySelector('[name="set3"]').value, 10);
+    const set4 = parseInt(document.querySelector('[name="set4"]').value, 10);
     dbManager.add({ title, set1, set2, set3, set4 }).then((id) => {
         console.log(`Data added with ID: ${id}`);
     });
