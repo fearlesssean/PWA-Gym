@@ -20,10 +20,16 @@
         <button onclick="alert('Under construction - Coming Soon!')">Get Started!</button>
     </div>
     <hr>
-    <div id="workout-form"></div>
+    <cycle-form>
+        <span slot="title">Bench A1</span>
+        <sets-input slot="sets-input" data-sets="5"></sets-input>
+    </cycle-form>
     <div id="output" style="margin-top: 20px;"></div>
 
     <script type="module" src="app.js"></script>
+    <script src="templates/forms.js"></script>
+
+    
 </body>
 
 </html>

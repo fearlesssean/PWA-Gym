@@ -2,10 +2,10 @@
     "name": "PWA-Gym Workout App",
     "short_name": "PWA-Gym",
     "description": "A progressive workout app.",
-    "start_url": "/PWA-Gym/index.html",
-    "display": "standalone",
-    "background_color": "purple",
     "theme_color": "purple",
+    "background_color": "purple",
+    "display": "standalone",
+    "start_url": "/PWA-Gym/index.html",
     "icons": [
       {
         "src": "/PWA-Gym/icons/icon-192x192.png",
