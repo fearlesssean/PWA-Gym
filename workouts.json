@@ -1,44 +1,223 @@
 {
-    "A1": {
+    "cycles": {
+      "A1": {
         "title": "A1",
         "sets": 4,
         "reps": [10, 10, 10, 10],
         "percents": [0.5, 0.65, 0.7, 0.75]
-    },
-    "A2": {
+      },
+      "A2": {
         "title": "A2",
         "sets": 5,
         "reps": [10, 8, 8, 8, 8],
         "percents": [0.5, 0.65, 0.7, 0.75, 0.78]
-    },
-    "A3": {
+      },
+      "A3": {
         "title": "A3",
         "sets": 6,
         "reps": [10, 8, 6, 6, 6, 6],
         "percents": [0.5, 0.65, 0.7, 0.75, 0.78, 0.81]
-    },
-    "A4": {
+      },
+      "A4": {
         "title": "A4",
         "sets": 6,
         "reps": [10, 8, 5, 5, 5, 5],
         "percents": [0.5, 0.65, 0.7, 0.75, 0.8, 0.85]
-    },
-    "A5": {
+      },
+      "A5": {
         "title": "A5",
         "sets": 6,
         "reps": [10, 8, 6, 4, 3, 2],
         "percents": [0.5, 0.65, 0.75, 0.8, 0.85, 0.9]
-    },
-    "A6": {
+      },
+      "A6": {
         "title": "A6",
         "sets": 6,
         "reps": [10, 8, 5, 4, 3, 2],
         "percents": [0.5, 0.65, 0.75, 0.85, 0.9, 0.95]
-    },
-    "MAX": {
+      },
+      "MAX": {
         "title": "MAX",
         "sets": 5,
         "reps": [10, 5, 3, 1, 1],
         "percents": [0.5, 0.65, 0.75, 0.85, 1.0]
+      },
+      "B1": {
+        "title": "B1",
+        "sets": 4,
+        "reps": [10, 10, 10, 10],
+        "percents": [0.5, 0.65, 0.7, 0.75]
+      },
+      "B2": {
+        "title": "B2",
+        "sets": 5,
+        "reps": [10, 8, 5, 5, 5],
+        "percents": [0.5, 0.65, 0.7, 0.8, 0.85]
+      },
+      "B3": {
+        "title": "B3",
+        "sets": 6,
+        "reps": [10, 6, 4, 4, 4, 4],
+        "percents": [0.5, 0.75, 0.75, 0.8, 0.85, 0.9]
+      },
+      "B4": {
+        "title": "B4",
+        "sets": 6,
+        "reps": [10, 6, 4, 3, 3, 3],
+        "percents": [0.5, 0.7, 0.75, 0.82, 0.87, 0.95]
+      },
+      "B5": {
+        "title": "B5",
+        "sets": 6,
+        "reps": [10, 6, 4, 3, 2, 2],
+        "percents": [0.5, 0.7, 0.8, 0.85, 0.9, 0.97]
+      },
+      "B6": {
+        "title": "B6",
+        "sets": 6,
+        "reps": [10, 5, 4, 3, 2, 1],
+        "percents": [0.5, 0.75, 0.82, 0.87, 0.92, 1.0]
+      }
+    },
+    "workouts": {
+      "Monday": {
+        "incline": {
+          "title": "Incline Bench",
+          "sets": 3,
+          "reps": [10, 8, 6]        
+        },
+        "decline": {
+          "title": "Decline Bench",
+          "sets": 3,
+          "reps": [10, 8, 6]         
+        },
+        "closeGrip": {
+          "title": "Close Grip Bench",
+          "sets": 3,
+          "reps": [10, 10, 10]         
+        },
+        "flies": {
+          "title": "Cable Flies",
+          "sets": 3,
+          "reps": [10, 10, 10]         
+        },
+        "triceps": {
+          "title": "Tricep Push Downs",
+          "sets": 3,
+          "reps": [10, 10, 10]         
+        },
+        "reverseCurls": {
+          "title": "Reverse Curls",
+          "sets": 3,
+          "reps": [10, 10, 10]         
+        }
+      },
+      "Tuesday": {
+        "frontSquat": {
+          "title": "Front Squat",
+          "sets": 4,
+          "reps": [10, 10, 10, 10]        
+        },
+        "kettleSwings": {
+          "title": "Kettle Bell Swings",
+          "sets": 3,
+          "reps": [10, 10, 10]        
+        },
+        "shoulderPressDB": {
+          "title": "Shoulder Press DB",
+          "sets": 3,
+          "reps": [10, 10, 10]         
+        },
+        "latsFront": {
+          "title": "Lats Front",
+          "sets": 3,
+          "reps": [10, 10, 10]        
+        },
+        "bentShoulder": {
+          "title": "Bent Shoulder Raises",
+          "sets": 3,
+          "reps": [10, 10, 10]        
+        },
+        "shrugsDB": {
+          "title": "Shrugs DB",
+          "sets": 3,
+          "reps": [10, 10, 10]         
+        },
+        "curlsDB": {
+          "title": "Curls DB",
+          "sets": 3,
+          "reps": [10, 10, 10]        
+        }
+      },
+      "Thursday": {
+        "benchDB": {
+          "title": "Bench DB",
+          "sets": 4,
+          "reps": [10, 10, 10, 10]        
+        },
+        "inclineDB": {
+          "title": "Incline DB",
+          "sets": 3,
+          "reps": [10, 10, 10]         
+        },
+        "declineDB": {
+          "title": "Decline DB",
+          "sets": 3,
+          "reps": [10, 10, 10]          
+        },
+        "closeGripDB": {
+          "title": "Close Grip DB",
+          "sets": 3,
+          "reps": [10, 10, 10]         
+        },
+        "inclineFliesDB": {
+          "title": "Incline Flies DB",
+          "sets": 3,
+          "reps": [10, 10, 10]
+        },
+        "pulloversDB": {
+          "title": "Pullovers DB",
+          "sets": 3,
+          "reps": [10, 10, 10]        
+        },
+        "reverseCurlsDB": {
+          "title": "Reverse Curls DB",
+          "sets": 3,
+          "reps": [10, 10, 10]          
+        }
+      },
+      "Friday": {
+        "shoulderPress": {
+          "title": "Shoulder Press",
+          "sets": 3,
+          "reps": [10, 10, 10]         
+        },
+        "latsBack": {
+          "title": "Lats Back",
+          "sets": 3,
+          "reps": [10, 10, 10]         
+        },
+        "uprightRows": {
+          "title": "Up-Right Rows",
+          "sets": 3,
+          "reps": [10, 10, 10]       
+        },
+        "shrugsBar": {
+          "title": "Shrugs Bar",
+          "sets": 3,
+          "reps": [10, 10, 10]         
+        },
+        "curls": {
+          "title": "Curls",
+          "sets": 3,
+          "reps": [10, 10, 10]          
+        },
+        "tricepsDips": {
+          "title": "Triceps Dips",
+          "sets": 3,
+          "reps": [10, 10, 10]          
+        }
+      }
     }
-}
+  }
+  

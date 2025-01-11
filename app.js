@@ -1,6 +1,5 @@
 // Script for form
-const form = document.getElementById('dataForm');
-const output = document.getElementById('output');
+const container = document.getElementById('workout-container');
 
 window.onload = () => {
     // Load saved data on page load
@@ -8,14 +7,6 @@ window.onload = () => {
     const savedSet1 = localStorage.getItem('set1');
     const savedSet2 = localStorage.getItem('set2');
     const savedSet3 = localStorage.getItem('set3');
-
-    if (savedTitle || savedSet1 || savedSet2 || savedSet3) {
-        output.innerHTML = `<p>Saved Data:</p>
-            <p>Title: ${savedTitle || 'N/A'}</p>
-            <p>Set1: ${savedSet1 || 'N/A'}</p>
-            <p>Set2: ${savedSet2 || 'N/A'}</p>
-            <p>Set3: ${savedSet3 || 'N/A'}</p>`;
-    }
 
     // fetch json file
     fetch('workouts.json')
@@ -26,52 +17,138 @@ window.onload = () => {
             return response.json();
         })
         .then(data => {
-            // Iterate through the JSON keys
-            let html_form = '';
-            for (const key in data) {
-                if (data[key]?.title) { // Safely access 'title'
-                    let html = `<div class="mt-4 p-5 bg-primary text-white rounded"><h1>${data[key].title}</h1><form id="dataForm"><input id="title" type="text" name="title" value="${data[key].title}" hidden>`
-                    for (const set in data[key].reps) {
-                        html += `
-<div class="input-group mb-3">
-    <span class="input-group-text">${data[key].reps[set]}x</span>
-    <input id="set1" type="number" class="form-control" name="set1" placeholder="" required>
-</div>`}; 
-                    html += `<button type="submit">Save</button></form></div>`;
-                    html_form += html;
-                } else {
-                    console.error(`Missing 'title' for key: ${key}`);
+            // Access the Monday workout
+            const mondayWorkout = data.workouts.Monday;
+
+            // Access the Monday workout
+            const workoutCycles = data.cycles;
+
+            // Loop through each exercise in Monday
+            for (const exerciseKey in mondayWorkout) {
+                const exercise = mondayWorkout[exerciseKey];
+                // Create a col div for responsive layout
+                const col = document.createElement('div');
+                col.classList.add('col-md-6');
+
+                // Create a card for each workout
+                const card = document.createElement('div');
+                card.classList.add('card', 'shadow-sm', 'bg-dark', 'text-light');
+
+                const cardBody = document.createElement('div');
+                cardBody.classList.add('card-body');
+
+                // Add workout title
+                const cardTitle = document.createElement('h5');
+                cardTitle.classList.add('card-title');
+                cardTitle.textContent = exercise.title;
+                cardBody.appendChild(cardTitle);
+
+                // Add percents
+                if (exercise.percents) {
+                    const percents = document.createElement('p');
+                    percents.classList.add('card-text');
+                    percents.textContent = `Percents: ${exercise.percents.join(', ') || 'None'}`;
+                    cardBody.appendChild(percents);
                 }
-            }
-            document.getElementById("workout-form").innerHTML = html_form;
-        })
-        .catch(error => {
-            console.error('Error fetching JSON:', error);
-        });
+
+                // Add form element
+                const form = document.createElement('form');
+
+                // Add input field name title
+                const inputTitle = document.createElement('input');
+                inputTitle.type = 'text';
+                inputTitle.name = 'title';
+                inputTitle.value = exercise.title;
+                //inputTitle.hidden = true;
+
+                // Add input fields dynamically
+                let i = 0;
+                for (const rep in exercise.reps) {
+                    //counter
+                    const formGroup = document.createElement('div');
+                    formGroup.classList.add('mb-3');
+
+                    const inputGroup = document.createElement('div');
+                    inputGroup.classList.add('input-group', 'mt-2');
+
+                    const span1 = document.createElement('span');
+                    span1.textContent = `${exercise.reps[rep]} x`;
+                    span1.classList.add('input-group-text');
+
+                    const input = document.createElement('input');
+                    input.type = 'number';
+                    input.name = `set${i + 1}`;
+                    if (exercise.percents) {
+                        input.value = Math.round(exercise.percents[rep] * 100 / 5) * 5 || '';
+                    }
+                    input.classList.add('form-control');
+                    
+                    const span2 = document.createElement('span');
+                    span2.textContent = '.lbs';
+                    span2.classList.add('input-group-text');
+                    
+                    inputGroup.appendChild(span1);
+                    inputGroup.appendChild(input);
+                    inputGroup.appendChild(span2);
+                    formGroup.appendChild(inputGroup);
+                    form.appendChild(inputTitle);
+                    form.appendChild(formGroup);
+                    i++;
+                };
+
+                // Add a submit button
+                const submitButton = document.createElement('button');
+                //submitButton.type = 'submit';
+                submitButton.textContent = 'Save Workout';
+                submitButton.classList.add('btn', 'btn-warning', 'mt-3');
+                submitButton.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    saveData();
+                });
+                form.appendChild(submitButton);
+
+                // Append form to card body
+                cardBody.appendChild(form);
+                card.appendChild(cardBody);
+                col.appendChild(card);
+
+                // Append the card to the container
+                container.appendChild(col);
+            };
+})
+        .catch (error => {
+    console.error('Error fetching JSON:', error);
+});
 };
 
-// Save data to localStorage on form submit
-form.addEventListener('submit', (event) => {
-    event.preventDefault(); // Prevent page reload
+// Save data to IndexedDB
+function saveData() {
+    const title = document.getElementsByName('title').value;
+    const set1 = document.getElementsByName('set1').value;
+    const set2 = document.getElementsByName('set2').value;
+    const set3 = document.getElementsByName('set3').value;
 
-    const title = document.getElementById('title').value;
-    const set1 = document.getElementById('set1').value;
-    const set2 = document.getElementById('set2').value;
-    const set3 = document.getElementById('set3').value;
+    const dbPromise = window.indexedDB.open('workoutDB', 1);
 
-    localStorage.setItem('title', title);
-    localStorage.setItem('set1', set1);
-    localStorage.setItem('set2', set2);
-    localStorage.setItem('set3', set3);
+    dbPromise.onsuccess = (event) => {
+        const db = event.target.result;
+        const transaction = db.transaction(['workouts'], 'readwrite');
+        const store = transaction.objectStore('workouts');
 
-    output.innerHTML = `
-            <p>Data Saved Locally:</p>
-            <p>Title: ${title}</p>
-            <p>Set1: ${set1}</p>
-            <p>Set2: ${set2}</p>
-            <p>Set3: ${set3}</p>
-        `;
-});
+        const workout = {
+            title: title,
+            set1: set1,
+            set2: set2,
+            set3: set3
+        };
+
+        store.add(workout);
+    };
+
+    dbPromise.onerror = (event) => {
+        console.error('Error opening IndexedDB:', event.target.error);
+    };
+}
 
 //Register the service worker
 if ('serviceWorker' in navigator) {
