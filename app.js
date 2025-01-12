@@ -11,15 +11,17 @@ window.onload = () => {
 
     // Select workout cycle and day
     const dayBtn = document.getElementById('day-btn');
+    const selectCycle = document.getElementById('select-cycle') || 'A1';
     const selectDay = document.getElementById('select-day') || 'Monday';
-    const selectCycle = document.getElementById('select-cycle');
-    const selectedMAX = 225;
+    const maxInput = document.getElementById('input-max') || 45;
 
-    // Event listener for day selection
+    // Event listener for day and cycle selection
     dayBtn.addEventListener('click', () => {
         // Clear the workout container
         container.innerHTML = "";
+        const selectedCycle = selectCycle.value; // Get the selected day from the dropdown
         const selectedDay = selectDay.value; // Get the selected day from the dropdown
+        const selectedMax = maxInput.value;
         // fetch json file
         fetch('workouts.json')
             .then(response => {
@@ -29,15 +31,13 @@ window.onload = () => {
                 return response.json();
             })
             .then(data => {
-                // Access the Monday workout
+                // Access the cycles workout
+                const workoutCycles = data.cycles[selectedCycle];
+                // Access the day workout
                 const selectedWorkout = data.workouts[selectedDay];
 
-                // Access the Monday workout
-                const workoutCycles = data.cycles;
-
-                // Loop through each exercise in selectedWorkout
-                for (const exerciseKey in selectedWorkout) {
-                    const exercise = selectedWorkout[exerciseKey];
+                function createForm(data, selectedMax) {
+                    const exercise = data;
                     // Create a col div for responsive layout
                     const col = document.createElement('div');
                     col.classList.add('col-md-6');
@@ -57,7 +57,7 @@ window.onload = () => {
 
                     // Add form element
                     const form = document.createElement('form');
-                    const formId = exerciseKey;
+                    const formId = exercise.title;
                     form.id = formId;
 
                     // Add input field name title
@@ -85,7 +85,7 @@ window.onload = () => {
                         input.type = 'number';
                         input.name = `set${i + 1}`;
                         if (exercise.percents) {
-                            input.value = Math.round(exercise.percents[rep] * selectedMAX / 5) * 5 || '';
+                            input.value = Math.round(exercise.percents[rep] * selectedMax / 5) * 5 || '';
                         }
                         input.classList.add('form-control');
 
@@ -120,6 +120,16 @@ window.onload = () => {
 
                     // Append the card to the container
                     container.appendChild(col);
+                }
+                // Create form for selected cycle
+                if (selectedDay == 'Monday' || selectedDay == 'Friday') {
+                    createForm(workoutCycles, selectedMax);
+                }
+
+                // Loop through each exercise in selectedWorkout
+                for (const exerciseKey in selectedWorkout) {
+                    const exercise = selectedWorkout[exerciseKey];
+                    createForm(exercise, null);
                 };
             })
             .catch(error => {
