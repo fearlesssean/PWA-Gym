@@ -45,7 +45,18 @@
                 <option>A2</option>
                 <option>A3</option>
                 <option>A4</option>
+                <option>A5</option>
+                <option>A6</option>
+                <option>B1</option>
+                <option>B2</option>
+                <option>B3</option>
+                <option>B4</option>
+                <option>B5</option>
+                <option>B6</option>
             </select>
+            <span class="input-group-text">
+                <button id="cycle-btn" class="btn btn-warning">Update</button>
+            </span>
         </div>
         <div class="input-group mt-2">
             <span class="input-group-text">Day</span>
@@ -55,13 +66,24 @@
                 <option>Thursday</option>
                 <option>Friday</option>
             </select>
+            <span class="input-group-text">
+                <button id="day-btn" class="btn btn-warning">Update</button>
+            </span>
         </div>
         <div class="input-group mt-2">
-            <span class="input-group-text">One-Rep Max</span>
-            <input id="input-max" class="form-control" type="number" min="45" max="900">
-            <span class="input-group-text">.lbs</span>
+            <span class="input-group-text">Bench Max</span>
+            <input id="bench-max" class="form-control" type="number" min="45" max="900" placeholder=".lbs">
+            <span class="input-group-text">
+                <button id="saveBenchBtn" class="btn btn-warning">Update</button>
+            </span>
         </div>
-        <button id="day-btn" class="btn btn-warning mt-3">Update</button>
+        <div class="input-group mt-2">
+            <span class="input-group-text">Squat Max</span>
+            <input id="squat-max" class="form-control" type="number" min="45" max="900" placeholder=".lbs">
+            <span class="input-group-text">
+                <button id="saveSquatBtn" class="btn btn-warning">Update</button>
+            </span>
+        </div>
     </div>
     <script src="IndexedDBManager.js"></script>
     <script type="module" src="app.js"></script>

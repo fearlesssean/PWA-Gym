@@ -35,15 +35,18 @@
             </div>
         </div>
     </nav>
-    <hr>
+    <br>
     <h1>Workout Logs</h1>
-    <p>Click - "Get Logs" to fetch and refesh workout logs list</p>
-    <div class="content">
+    <hr>
+    <div class="container-fluid">
         <button id="logs-btn" class="btn btn-warning">Get Logs</button>
-        <div class="container my-5">
-            <div id="dataList" class="row g-4"></div>
+        <div class="container my-3">
+            <div id="dataList" class="row g-4">
+                <p>Click "Get Logs" to view workout logs.</p>
+            </div>
         </div>
     </div>
+
     <script src="IndexedDBManager.js"></script>
     <script type="module" src="app.js"></script>
     <footer>
