@@ -16,10 +16,8 @@ window.onload = () => {
     const savedayBtn = document.getElementById('day-btn');
     const cycleBtn = document.getElementById('cycle-btn');
     const logsBtn = document.getElementById('logs-btn');
-    const saveBenchBtn = document.getElementById('bench-max');
-    const saveSquatBtn = document.getElementById('squat-max');
-    const selectCycle = document.getElementById('select-cycle') || 'A1';
-    const selectDay = document.getElementById('select-day') || 'Monday';
+    const saveBenchBtn = document.getElementById('saveBenchBtn');
+    const saveSquatBtn = document.getElementById('saveSquatBtn');
 
     if (logsBtn) {
         logsBtn.addEventListener('click', () => {
@@ -28,21 +26,25 @@ window.onload = () => {
     }
     if (saveBenchBtn) {
         saveBenchBtn.addEventListener('click', () => {
-            localStorage.setItem('benchMax', saveBenchBtn.value);
+            const input_benchMax = document.getElementById('bench-max').value;
+            localStorage.setItem('benchMax', input_benchMax);
         });
     }
     if (saveSquatBtn) {
         saveSquatBtn.addEventListener('click', () => {
-            localStorage.setItem('squatMax', saveSquatBtn.value);
+            const input_squatMax = document.getElementById('squat-max').value;
+            localStorage.setItem('squatMax', input_squatMax);
         });
     }
     if (cycleBtn) {
         cycleBtn.addEventListener('click', () => {
+            const selectCycle = document.getElementById('select-cycle') || 'A1';
             localStorage.setItem('cycle', selectCycle.value);
         });
     }
     if (savedayBtn) {
         savedayBtn.addEventListener('click', () => {
+            const selectDay = document.getElementById('select-day') || 'Monday';
             localStorage.setItem('day', selectDay.value);
         });
     }
@@ -187,8 +189,11 @@ window.onload = () => {
             }
         });
 
+        // Add a timestamp to the data object
+        data.timestamp = new Date().toISOString(); // ISO 8601 formatted timestamp
+
         dbManager.add(data).then((id) => {
-            console.log(`Data added with ID: ${id}`);
+            console.log(`Data added with ID: ${id} and timestamp: ${data.timestamp}`);
         });
     }
 
@@ -231,6 +236,9 @@ window.onload = () => {
 
             // Create and append user elements
             data.forEach(item => {
+                // Create readable date and time
+                const date = new Date(item.timestamp).toLocaleString(); // e.g., "1/13/2025, 12:34:56 PM"
+
                 // Create a container for the log entry
                 const logsDiv = document.createElement('div');
                 logsDiv.classList.add('log-entry', 'card', 'mb-2', 'shadow-sm', 'border-0', 'bg-dark', 'text-light');
@@ -251,6 +259,7 @@ window.onload = () => {
                 logsDiv.innerHTML = `
                     <div class="card-body">
                         <h5 class="card-title text-warning">${item.title}</h5>
+                        <p class="card-text">Timestamp: <span class="fw-bold">${date}</span></p>
                         <p class="card-text">Workout ID: <span class="fw-bold">${item.id}</span></p>
                     </div>
                     <ul class="list-group list-group-flush">
@@ -265,9 +274,15 @@ window.onload = () => {
 
                 // Append the log entry to the data list
                 dataList.appendChild(logsDiv);
+
+                // Add event listener for delete
+                const deleteButton = logsDiv.querySelector('.delete-btn');
+                deleteButton.addEventListener('click', () => {
+                    const idToDelete = deleteButton.getAttribute('data-id');
+                    deleteData(idToDelete); // Call your delete function with the ID
+                    getAllData();
+                });
             });
-
-
         });
     }
 }
