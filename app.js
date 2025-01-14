@@ -1,6 +1,6 @@
 
-// Script for form
 const workoutContainer = document.getElementById('workout-container');
+const subtitle = document.getElementById('subtitle');
 
 window.onload = () => {
     // Load saved data on page load
@@ -11,13 +11,18 @@ window.onload = () => {
     // Initialize the database
     const dbManager = new IndexedDBManager("WorkoutDB", "logs");
     dbManager.init().then(() => console.log("Database initialized"));
-
+    
     // Select workout cycle and day
     const savedayBtn = document.getElementById('day-btn');
     const cycleBtn = document.getElementById('cycle-btn');
     const logsBtn = document.getElementById('logs-btn');
     const saveBenchBtn = document.getElementById('saveBenchBtn');
     const saveSquatBtn = document.getElementById('saveSquatBtn');
+    
+    // Display saved data
+    if (subtitle) {
+        subtitle.innerHTML = `Cycle: ${savedCycle}, Day: ${savedDay}`;
+    }
 
     if (logsBtn) {
         logsBtn.addEventListener('click', () => {
@@ -28,44 +33,48 @@ window.onload = () => {
         saveBenchBtn.addEventListener('click', () => {
             const input_benchMax = document.getElementById('bench-max').value;
             localStorage.setItem('benchMax', input_benchMax);
+            showToast('Bench Max was updated', 'New Status!');
         });
     }
     if (saveSquatBtn) {
         saveSquatBtn.addEventListener('click', () => {
             const input_squatMax = document.getElementById('squat-max').value;
             localStorage.setItem('squatMax', input_squatMax);
+            showToast('Squat Max was updated', 'New Status!');
         });
     }
     if (cycleBtn) {
         cycleBtn.addEventListener('click', () => {
             const selectCycle = document.getElementById('select-cycle') || 'A1';
             localStorage.setItem('cycle', selectCycle.value);
+            showToast('Cycle was updated', 'New Status!');
         });
     }
     if (savedayBtn) {
         savedayBtn.addEventListener('click', () => {
             const selectDay = document.getElementById('select-day') || 'Monday';
             localStorage.setItem('day', selectDay.value);
+            showToast('Day was updated', 'New Status!');
         });
     }
-
+    
     // Clear the workout workoutContainer
     if (workoutContainer) {
         workoutContainer.innerHTML = "";
     }
-    // fetch json file
-    fetch('workouts.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Access the cycles workout
-            const workoutCycles = data.cycles[savedCycle];
-            // Access the day workout
-            const selectedWorkout = data.workouts[savedDay];
+    // Script for form
+    fetch('workouts.json') // fetch json file
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Access the cycles workout
+        const workoutCycles = data.cycles[savedCycle];
+        // Access the day workout
+        const selectedWorkout = data.workouts[savedDay];
 
             function createForm(exercise, selectedMax, addTitle) {
                 // Create a col div for responsive layout
@@ -193,7 +202,61 @@ window.onload = () => {
         data.timestamp = new Date().toISOString(); // ISO 8601 formatted timestamp
 
         dbManager.add(data).then((id) => {
+            showToast(`Workout saved! ${new Date(data.timestamp).toLocaleString()}`, `New Status!`);
             console.log(`Data added with ID: ${id} and timestamp: ${data.timestamp}`);
+        });
+    }
+    // Toast alert
+    function showToast(message, title = 'New Status') {
+        // Create main header element
+        const header = document.createElement('header');
+        
+        // Create toast container
+        const toastDiv = document.createElement('div');
+        toastDiv.classList.add('toast', 'show');
+        
+        // Create toast header
+        const toastHeader = document.createElement('div');
+        toastHeader.classList.add('toast-header');
+        
+        // Create title element
+        const strongTitle = document.createElement('strong');
+        strongTitle.classList.add('me-auto');
+        strongTitle.textContent = title;
+        
+        // Create close button
+        const closeButton = document.createElement('button');
+        closeButton.type = 'button';
+        closeButton.classList.add('btn-close');
+        closeButton.setAttribute('data-bs-dismiss', 'toast', '');
+        
+        // Create toast body
+        const toastBody = document.createElement('div');
+        toastBody.classList.add('toast-body');
+        
+        // Create message paragraph
+        const messagePara = document.createElement('p');
+        messagePara.textContent = message;
+        
+        // Assemble the toast
+        toastHeader.appendChild(strongTitle);
+        toastHeader.appendChild(closeButton);
+        toastBody.appendChild(messagePara);
+        toastDiv.appendChild(toastHeader);
+        toastDiv.appendChild(toastBody);
+        header.appendChild(toastDiv);
+        
+        // Add to document
+        document.body.appendChild(header);
+        
+        // Remove toast after 3 seconds
+        setTimeout(() => {
+            header.remove();
+        }, 3000);
+        
+        // Handle close button click
+        closeButton.addEventListener('click', () => {
+            header.remove();
         });
     }
 
@@ -260,9 +323,8 @@ window.onload = () => {
                     <div class="card-body">
                         <h5 class="card-title text-warning">${item.title}</h5>
                         <p class="card-text">Timestamp: <span class="fw-bold">${date}</span></p>
-                        <p class="card-text">Workout ID: <span class="fw-bold">${item.id}</span></p>
                     </div>
-                    <ul class="list-group list-group-flush">
+                    <ul class="list-group list-group-flush text-start">
                         ${sets.join('')}
                     </ul>
                     <div class="card-body text-end">
@@ -278,6 +340,7 @@ window.onload = () => {
                 // Add event listener for delete
                 const deleteButton = logsDiv.querySelector('.delete-btn');
                 deleteButton.addEventListener('click', () => {
+                    showToast(`Workout deleted!`, `New Status!`);
                     const idToDelete = deleteButton.getAttribute('data-id');
                     deleteData(idToDelete); // Call your delete function with the ID
                     getAllData();
