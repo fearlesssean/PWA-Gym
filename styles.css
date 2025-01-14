@@ -1,16 +1,31 @@
+:root {
+    --body: purple;
+    --accent1: #ffc107;
+    --accent2: white;
+    --accent3: rgba(33, 37, 41, 1);
+}
+
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color: purple;
-    color: white;
+    background-color: var(--body);
+    color: var(--accent2);
 }
 
 h1 {
-    color: #ffc107;
+    color: var(--accent1);
 }
 
 nav {
     border-top-right-radius: 150px;
+    border-top-color: var(--accent1);
+    border-top: var(--accent1);
+    border-top-width: 3px;
+    border-top-style: solid;
+    border-right-color: var(--accent1);
+    border-right: var(--accent1);
+    border-right-width: 3px;
+    border-right-style: solid;
     width: 250px;
 }
 
@@ -22,7 +37,7 @@ nav {
     position: fixed;
     top: 20px;
     right: 20px;
-    background-color: rgba(33, 37, 41, 1);
+    background-color: var(--accent3);
     min-width: 250px;
     border-radius: 4px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -33,7 +48,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     padding: 0.5rem 0.75rem;
-    background-color: #ffc107;
+    background-color: var(--accent1);
     border-bottom: 1px solid rgb(0, 0, 0);
 }
 
