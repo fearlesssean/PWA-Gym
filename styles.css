@@ -9,6 +9,11 @@ h1 {
     color: #ffc107;
 }
 
+nav {
+    border-top-right-radius: 150px;
+    width: 350px;
+}
+
 .content {
     margin-top: 30px;
 }
