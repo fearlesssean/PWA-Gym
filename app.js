@@ -149,8 +149,8 @@ window.onload = () => {
                 // Add a submit button
                 const submitButton = document.createElement('button');
                 //submitButton.type = 'submit';
-                submitButton.textContent = 'Save Workout';
-                submitButton.classList.add('btn', 'btn-warning', 'mt-3');
+                submitButton.textContent = ' Save';
+                submitButton.classList.add('btn', 'btn-warning', 'mt-3', 'bi', 'bi-floppy-fill');
                 submitButton.addEventListener('click', (event) => {
                     event.preventDefault();
                     addData(formId);
