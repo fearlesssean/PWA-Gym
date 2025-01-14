@@ -82,7 +82,7 @@ window.onload = () => {
 
                 // Create a card for each workout
                 const card = document.createElement('div');
-                card.classList.add('card', 'shadow-sm', 'bg-dark', 'text-light');
+                card.classList.add('card', 'shadow-sm');
 
                 const cardBody = document.createElement('div');
                 cardBody.classList.add('card-body');
@@ -94,8 +94,7 @@ window.onload = () => {
                 }
 
                 // Add workout title
-                const cardTitle = document.createElement('h5');
-                cardTitle.classList.add('card-title');
+                const cardTitle = document.createElement('h2');
                 cardTitle.textContent = exerciseTitle;
                 cardBody.appendChild(cardTitle);
 
@@ -150,7 +149,7 @@ window.onload = () => {
                 const submitButton = document.createElement('button');
                 //submitButton.type = 'submit';
                 submitButton.textContent = ' Save';
-                submitButton.classList.add('btn', 'btn-warning', 'mt-3', 'bi', 'bi-floppy-fill');
+                submitButton.classList.add('btn', 'mt-3', 'bi', 'bi-floppy-fill');
                 submitButton.addEventListener('click', (event) => {
                     event.preventDefault();
                     addData(formId);
@@ -303,7 +302,7 @@ window.onload = () => {
 
                 // Create a container for the log entry
                 const logsDiv = document.createElement('div');
-                logsDiv.classList.add('log-entry', 'card', 'mb-2', 'shadow-sm', 'border-0', 'bg-dark', 'text-light');
+                logsDiv.classList.add('log-entry', 'card', 'mb-2');
 
                 // Build the content dynamically
                 const sets = [];
@@ -320,14 +319,14 @@ window.onload = () => {
                 // Set the inner HTML for the log entry
                 logsDiv.innerHTML = `
                         <div class="card-body">
-                            <h5 class="card-title text-warning">${item.title}</h5>
-                            <p class="card-text">Timestamp: <span class="fw-bold">${date}</span></p>
+                            <h2>${item.title}</h2>
+                            <p class="card-text"><span class="fw-bold">${date}</span></p>
                         </div>
-                        <ul class="list-group list-group-flush text-start">
-                            ${sets.join('')}
+                        <ul class="text-start p-3">
+                            ${sets.join('<hr>')}
                         </ul>
                         <div class="card-body text-end">
-                            <button class="delete-btn btn btn-danger btn-sm" data-id="${item.id}">
+                            <button class="delete-btn btn btn-l" data-id="${item.id}">
                                 <i class="bi bi-trash"></i> Delete
                             </button>
                         </div>

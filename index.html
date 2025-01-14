@@ -15,19 +15,22 @@
 </head>
 
 <body>
-    <h1>Welcome to PWA-Gym</h1>
-    <p>This is a workout app to track your progress and guide you with progressive workout cycles.</p>
-    <div class="content">
+    <div class="container">
+        <div class="card card-body mb-3">
+            <h1>Welcome to PWA-Gym</h1>
+        </div>
+        <div class="card card-body mb-3">
+            <p>This is a workout app to track your progress and guide you with progressive workout cycles.</p>
+        </div>
     </div>
-
+    <nav class="fixed-bottom p-2">
+        <a class="btn btn-lg me-2 bi bi-journal float-start" href="workouts.html"></a>
+        <a class="btn btn-lg me-2 bi bi-journal-text float-start" href="logs.html"></a>
+        <a class="btn btn-lg me-2 bi bi-gear float-start" href="account.html"></a>
+        <a class="btn btn-lg me-2 bi bi-info-circle float-start" href="index.html"></a>
+    </nav>
     <script src="IndexedDBManager.js"></script>
     <script type="module" src="app.js"></script>
-    <nav class="bg-dark navbar-dark fixed-bottom p-2">
-        <a class="btn btn-warning me-2 bi bi-journal float-start" href="workouts.html"></a>
-        <a class="btn btn-warning me-2 bi bi-journal-text float-start" href="logs.html"></a>
-        <a class="btn btn-warning me-2 bi bi-gear float-start" href="account.html"></a>
-        <a class="btn btn-warning me-2 bi bi-info-circle float-start" href="index.html"></a>
-    </nav>
 </body>
 
 </html>

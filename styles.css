@@ -1,8 +1,9 @@
 :root {
-    --body: purple;
-    --accent1: #ffc107;
-    --accent2: white;
-    --accent3: rgba(33, 37, 41, 1);
+    --body: rgb(0, 0, 0);
+    --accent1: #00d5ff;
+    --accent2: rgb(255, 251, 0);
+    --tp_accent1: rgba(0, 0, 0, 0.9);
+    --tp_accent2: rgba(0, 0, 0, 0.8);
 }
 
 body {
@@ -10,23 +11,84 @@ body {
     text-align: center;
     background-color: var(--body);
     color: var(--accent2);
+    background-image: url('solo-leveling.jpeg');
+    background-attachment: fixed;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-size:cover;
+}
+
+#page-header {
+    margin-bottom: 15px;
+    border-bottom-left-radius: 150px;
+    background-color: var(--tp_accent1);
+    border-bottom-color: var(--accent1);
+    border-bottom-width: 3px;
+    border-bottom-style: dashed;
+    border-left-color: var(--accent1);
+    border-left-width: 3px;
+    border-left-style: dashed;
+    padding: 3px;
+    box-shadow: 0 4px 18px rgba(0,0,0,1);
+}
+
+nav {
+    background-color: var(--tp_accent2);
+    border-top-color: var(--accent1);
+    border-right-color: var(--accent1);
+    border-right: var(--accent1);
+    border-top-right-radius: 150px;
+    border-top-width: 2px;
+    border-top-style: solid;
+    border-right-width: 2px;
+    border-right-style: solid;
+    width: 300px;
+    box-shadow: 0 4px 18px rgba(0,0,0,1);
 }
 
 h1 {
     color: var(--accent1);
 }
 
-nav {
-    border-top-right-radius: 150px;
-    border-top-color: var(--accent1);
-    border-top: var(--accent1);
-    border-top-width: 3px;
-    border-top-style: solid;
-    border-right-color: var(--accent1);
-    border-right: var(--accent1);
-    border-right-width: 3px;
-    border-right-style: solid;
-    width: 250px;
+h2 {
+    color: var(--accent2);
+}
+
+input.form-control, select.form-select, span.input-group-text {
+    background-color: var(--tp_accent1); /* Override default background */
+    color: var(--accent2); /* Override text color */
+    border: 2px solid var(--accent1); /* Override border */
+}
+
+ul {
+    background-color: var(--body); /* Override default background */
+    color: var(--accent2); /* Override text color */
+    border: 1px dashed var(--accent2); /* Override border */
+}
+
+.container {
+    margin-top: 15px;
+}
+
+.card {
+    border-color: var(--accent1);
+    background-color: var(--tp_accent1);
+    color: var(--accent1);
+    box-shadow: 0 4px 8px rgba(0,0,0,1);
+}
+
+.btn {
+    background-color: var(--accent1);
+    color: var(--body);
+}
+
+.delete-btn {
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: red;
+    border-style: solid;
+    color: red;
+    background-color: var(--body);
 }
 
 .content {
@@ -37,10 +99,10 @@ nav {
     position: fixed;
     top: 20px;
     right: 20px;
-    background-color: var(--accent3);
+    background-color: var(--tp_accent1);
     min-width: 250px;
     border-radius: 4px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,1);
 }
 
 .toast-header {
@@ -49,7 +111,7 @@ nav {
     align-items: center;
     padding: 0.5rem 0.75rem;
     background-color: var(--accent1);
-    border-bottom: 1px solid rgb(0, 0, 0);
+    border-bottom: 1px solid var(--tp_accent1);
 }
 
 .toast-body {

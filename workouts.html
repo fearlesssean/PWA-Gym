@@ -16,19 +16,18 @@
 
 <body>
     <div class="container">
-        <h1>Workouts</h1>
-        <p id="subtitle"></p>
-        <hr>
-        <div class="container my-4">
-            <div id="workout-container" class="row g-4"></div>
+        <div class="card card-body mb-3">
+            <h1>Workouts</h1>
+            <h2 id="subtitle"></h2>
         </div>
-        <nav class="bg-dark navbar-dark fixed-bottom p-2">
-            <a class="btn btn-warning me-2 bi bi-journal float-start" href="workouts.html"></a>
-            <a class="btn btn-warning me-2 bi bi-journal-text float-start" href="logs.html"></a>
-            <a class="btn btn-warning me-2 bi bi-gear float-start" href="account.html"></a>
-            <a class="btn btn-warning me-2 bi bi-info-circle float-start" href="index.html"></a>
-        </nav>
+        <div id="workout-container" class="row g-4"></div>
     </div>
+    <nav class="fixed-bottom p-2">
+        <a class="btn btn-lg me-2 bi bi-journal float-start" href="workouts.html"></a>
+        <a class="btn btn-lg me-2 bi bi-journal-text float-start" href="logs.html"></a>
+        <a class="btn btn-lg me-2 bi bi-gear float-start" href="account.html"></a>
+        <a class="btn btn-lg me-2 bi bi-info-circle float-start" href="index.html"></a>
+    </nav>
     <script src="IndexedDBManager.js"></script>
     <script type="module" src="app.js"></script>
 </body>
