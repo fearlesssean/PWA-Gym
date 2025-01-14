@@ -1,4 +1,3 @@
-
 const workoutContainer = document.getElementById('workout-container');
 const subtitle = document.getElementById('subtitle');
 
@@ -11,14 +10,14 @@ window.onload = () => {
     // Initialize the database
     const dbManager = new IndexedDBManager("WorkoutDB", "logs");
     dbManager.init().then(() => console.log("Database initialized"));
-    
+
     // Select workout cycle and day
     const savedayBtn = document.getElementById('day-btn');
     const cycleBtn = document.getElementById('cycle-btn');
     const logsBtn = document.getElementById('logs-btn');
     const saveBenchBtn = document.getElementById('saveBenchBtn');
     const saveSquatBtn = document.getElementById('saveSquatBtn');
-    
+
     // Display saved data
     if (subtitle) {
         subtitle.innerHTML = `Cycle: ${savedCycle}, Day: ${savedDay}`;
@@ -57,24 +56,24 @@ window.onload = () => {
             showToast('Day was updated', 'New Status!');
         });
     }
-    
+
     // Clear the workout workoutContainer
     if (workoutContainer) {
         workoutContainer.innerHTML = "";
     }
     // Script for form
     fetch('workouts.json') // fetch json file
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Access the cycles workout
-        const workoutCycles = data.cycles[savedCycle];
-        // Access the day workout
-        const selectedWorkout = data.workouts[savedDay];
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Access the cycles workout
+            const workoutCycles = data.cycles[savedCycle];
+            // Access the day workout
+            const selectedWorkout = data.workouts[savedDay];
 
             function createForm(exercise, selectedMax, addTitle) {
                 // Create a col div for responsive layout
@@ -210,34 +209,34 @@ window.onload = () => {
     function showToast(message, title = 'New Status') {
         // Create main header element
         const header = document.createElement('header');
-        
+
         // Create toast container
         const toastDiv = document.createElement('div');
         toastDiv.classList.add('toast', 'show');
-        
+
         // Create toast header
         const toastHeader = document.createElement('div');
         toastHeader.classList.add('toast-header');
-        
+
         // Create title element
         const strongTitle = document.createElement('strong');
         strongTitle.classList.add('me-auto');
         strongTitle.textContent = title;
-        
+
         // Create close button
         const closeButton = document.createElement('button');
         closeButton.type = 'button';
         closeButton.classList.add('btn-close');
         closeButton.setAttribute('data-bs-dismiss', 'toast', '');
-        
+
         // Create toast body
         const toastBody = document.createElement('div');
         toastBody.classList.add('toast-body');
-        
+
         // Create message paragraph
         const messagePara = document.createElement('p');
         messagePara.textContent = message;
-        
+
         // Assemble the toast
         toastHeader.appendChild(strongTitle);
         toastHeader.appendChild(closeButton);
@@ -245,15 +244,15 @@ window.onload = () => {
         toastDiv.appendChild(toastHeader);
         toastDiv.appendChild(toastBody);
         header.appendChild(toastDiv);
-        
+
         // Add to document
         document.body.appendChild(header);
-        
+
         // Remove toast after 3 seconds
         setTimeout(() => {
             header.remove();
         }, 3000);
-        
+
         // Handle close button click
         closeButton.addEventListener('click', () => {
             header.remove();
@@ -286,8 +285,8 @@ window.onload = () => {
 
     function getAllData() {
         dbManager.getAll().then((data) => {
+            const dataList = document.getElementById('dataList');
             console.log("All data:", data);
-            const dataList = document.getElementById("dataList");
 
             if (data.length == 0) {
                 dataList.innerHTML = '<hr><p>No workout logs saved..</p>';
@@ -311,28 +310,28 @@ window.onload = () => {
                 for (let i = 1; i <= 6; i++) {
                     if (item[`set${i}`]) {
                         sets.push(`
-                <li class="list-group-item">
-                    <span class="fw-bold">Set ${i}:</span> ${item[`set${i}`]}.lbs
-                </li>
-            `);
+                    <li class="list-group-item">
+                        <span class="fw-bold">Set ${i}:</span> ${item[`set${i}`]}.lbs
+                    </li>
+                `);
                     }
                 }
 
                 // Set the inner HTML for the log entry
                 logsDiv.innerHTML = `
-                    <div class="card-body">
-                        <h5 class="card-title text-warning">${item.title}</h5>
-                        <p class="card-text">Timestamp: <span class="fw-bold">${date}</span></p>
-                    </div>
-                    <ul class="list-group list-group-flush text-start">
-                        ${sets.join('')}
-                    </ul>
-                    <div class="card-body text-end">
-                        <button class="delete-btn btn btn-danger btn-sm" data-id="${item.id}">
-                            <i class="bi bi-trash"></i> Delete
-                        </button>
-                    </div>
-                `;
+                        <div class="card-body">
+                            <h5 class="card-title text-warning">${item.title}</h5>
+                            <p class="card-text">Timestamp: <span class="fw-bold">${date}</span></p>
+                        </div>
+                        <ul class="list-group list-group-flush text-start">
+                            ${sets.join('')}
+                        </ul>
+                        <div class="card-body text-end">
+                            <button class="delete-btn btn btn-danger btn-sm" data-id="${item.id}">
+                                <i class="bi bi-trash"></i> Delete
+                            </button>
+                        </div>
+                    `;
 
                 // Append the log entry to the data list
                 dataList.appendChild(logsDiv);
@@ -349,6 +348,7 @@ window.onload = () => {
         });
     }
 }
+
 //Register the service worker
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/PWA-Gym/service-worker.js', { scope: '/PWA-Gym/' })
