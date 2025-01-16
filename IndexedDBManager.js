@@ -72,7 +72,11 @@ class IndexedDBManager {
             const transaction = this.db.transaction(this.storeName, "readonly");
             const store = transaction.objectStore(this.storeName);
             const request = store.getAll();
-            request.onsuccess = () => resolve(request.result);
+            request.onsuccess = () => {
+                // Sort the results in descending order
+                const sortedResult = request.result.sort((a, b) => b.id - a.id); // Replace 'id' with your sorting property
+                resolve(sortedResult);
+            };
             request.onerror = () => reject(request.error);
         });
     }

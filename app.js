@@ -15,6 +15,7 @@ window.onload = () => {
     const savedayBtn = document.getElementById('day-btn');
     const cycleBtn = document.getElementById('cycle-btn');
     const logsBtn = document.getElementById('logs-btn');
+    const toastBtn = document.getElementById('toast-btn');
     const saveBenchBtn = document.getElementById('saveBenchBtn');
     const saveSquatBtn = document.getElementById('saveSquatBtn');
 
@@ -22,7 +23,11 @@ window.onload = () => {
     if (subtitle) {
         subtitle.innerHTML = `Cycle: ${savedCycle}, Day: ${savedDay}`;
     }
-
+    if (toastBtn) {
+        toastBtn.addEventListener('click', () => {
+            showToast('This is a toast test...', 'New Status!');
+        });
+    }
     if (logsBtn) {
         logsBtn.addEventListener('click', () => {
             getAllData();
@@ -76,44 +81,37 @@ window.onload = () => {
             const selectedWorkout = data.workouts[savedDay];
 
             function createForm(exercise, selectedMax, addTitle) {
-                // Create a col div for responsive layout
                 const col = document.createElement('div');
                 col.classList.add('col-md-6');
 
-                // Create a card for each workout
                 const card = document.createElement('div');
                 card.classList.add('card', 'shadow-sm');
 
                 const cardBody = document.createElement('div');
                 cardBody.classList.add('card-body');
 
-                // Create exercise title
                 let exerciseTitle = exercise.title;
+
                 if (addTitle != null) {
                     exerciseTitle = `${addTitle} ${exercise.title}`;
                 }
 
-                // Add workout title
                 const cardTitle = document.createElement('h2');
                 cardTitle.textContent = exerciseTitle;
                 cardBody.appendChild(cardTitle);
 
-                // Add form element
                 const form = document.createElement('form');
                 const formId = exerciseTitle.replace(/[^a-zA-Z0-9-_]/g, '-').toLowerCase();
                 form.id = formId;
 
-                // Add input field name title
                 const inputTitle = document.createElement('input');
                 inputTitle.type = 'text';
                 inputTitle.name = 'title';
                 inputTitle.value = exerciseTitle;
                 inputTitle.hidden = true;
 
-                // Add input fields dynamically
                 let i = 0;
                 for (const rep in exercise.reps) {
-                    //counter
                     const formGroup = document.createElement('div');
                     formGroup.classList.add('mb-3');
 
@@ -127,10 +125,10 @@ window.onload = () => {
                     const input = document.createElement('input');
                     input.type = 'number';
                     input.name = `set${i + 1}`;
-                    if (exercise.percents) {
-                        input.value = Math.round(exercise.percents[rep] * selectedMax / 5) * 5 || '';
-                    }
                     input.classList.add('form-control');
+                    input.required = true;
+                    input.min = 0;
+                    input.max = 900;
 
                     const span2 = document.createElement('span');
                     span2.textContent = '.lbs';
@@ -142,18 +140,39 @@ window.onload = () => {
                     formGroup.appendChild(inputGroup);
                     form.appendChild(inputTitle);
                     form.appendChild(formGroup);
+
+                    if (exercise.percents) {
+                        // Calculate percentage-based input value
+                        const inputValue = Math.round(exercise.percents[rep] * selectedMax / 5) * 5;
+                        input.value = inputValue;
+                    } else {
+                        // Fetch saved data asynchronously
+                        (async () => {
+                            const savedValue = await getWorkoutTitle(exerciseTitle, input.name);
+                            input.placeholder = savedValue !== null ? savedValue : '';
+                        })();
+                    }
+
                     i++;
-                };
+                }
 
                 // Add a submit button
                 const submitButton = document.createElement('button');
-                //submitButton.type = 'submit';
+                submitButton.type = 'submit'; // Make it a submit button
                 submitButton.textContent = ' Save';
                 submitButton.classList.add('btn', 'mt-3', 'bi', 'bi-floppy-fill');
-                submitButton.addEventListener('click', (event) => {
-                    event.preventDefault();
-                    addData(formId);
+
+                // Form submission handler
+                form.addEventListener('submit', (event) => {
+                    event.preventDefault(); // Prevent default submission
+                    if (form.checkValidity()) {
+                        // Only proceed if the form is valid
+                        addData(formId);
+                    } else {
+                        form.reportValidity(); // Show validation errors
+                    }
                 });
+
                 form.appendChild(submitButton);
 
                 // Append form to card body
@@ -164,6 +183,7 @@ window.onload = () => {
                 // Append the card to the workoutContainer
                 workoutContainer.appendChild(col);
             }
+
             // Create form for selected cycle
             if (savedDay == 'Monday') {
                 createForm(workoutCycles, savedBenchMax, 'Bench');
@@ -219,7 +239,6 @@ window.onload = () => {
 
         // Create title element
         const strongTitle = document.createElement('strong');
-        strongTitle.classList.add('me-auto');
         strongTitle.textContent = title;
 
         // Create close button
@@ -282,13 +301,28 @@ window.onload = () => {
         });
     }
 
+    function getWorkoutTitle(title, set) {
+        return dbManager.getAll().then((data) => {
+            if (data.length === 0) {
+                console.log("No data");
+                return null; // Return null to indicate no match
+            } else {
+                const matchingItem = data.find(item => item.title === title);
+                if (matchingItem) {
+                    return matchingItem[set] || null; // Return the set value or null if it doesn't exist
+                }
+                return null; // Return null if no matching item is found
+            }
+        });
+    }
+
     function getAllData() {
         dbManager.getAll().then((data) => {
             const dataList = document.getElementById('dataList');
             console.log("All data:", data);
 
             if (data.length == 0) {
-                dataList.innerHTML = '<hr><p>No workout logs saved..</p>';
+                dataList.innerHTML = '<div class="card card-body"><p>No workout logs saved..</p></div>';
             }
             else {
                 // Clear existing content
