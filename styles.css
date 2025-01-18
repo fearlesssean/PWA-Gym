@@ -1,9 +1,10 @@
 :root {
-    --body: rgb(0, 0, 0);
+    --body: #000000;
     --accent1: #00d5ff;
-    --accent2: rgb(255, 251, 0);
-    --tp_accent1: rgba(0, 0, 0, 0.9);
-    --tp_accent2: rgba(0, 0, 0, 0.8);
+    --accent2: #ffffff;
+    --accent3: #e8aa37;
+    --transparent1: rgba(0, 0, 0, 0.9);
+    --transparent2: #000f17ee;
 }
 
 ::placeholder {
@@ -25,7 +26,7 @@ body {
 #page-header {
     margin-bottom: 15px;
     border-bottom-left-radius: 150px;
-    background-color: var(--tp_accent1);
+    background-color: var(--transparent1);
     border-bottom-color: var(--accent1);
     border-bottom-width: 3px;
     border-bottom-style: dashed;
@@ -37,7 +38,7 @@ body {
 }
 
 nav {
-    background-color: var(--tp_accent2);
+    background-color: var(--transparent2);
     border-top-color: var(--accent1);
     border-right-color: var(--accent1);
     border-right: var(--accent1);
@@ -51,21 +52,27 @@ nav {
 }
 
 h1 {
-    color: var(--accent1);
+    color: var(--accent2);
 }
 
 h2 {
     color: var(--accent2);
 }
 
-input.form-control, select.form-select, span.input-group-text{
-    background-color: var(--tp_accent1); /* Override default background */
+input.form-control, select.form-select{
+    background-color: var(--transparent1); /* Override default background */
     color: var(--accent2); /* Override text color */
     border: 1px solid var(--accent1); /* Override border */
 }
 
+span.input-group-text {
+    background-color: var(--transparent1); /* Override default background */
+    color: var(--accent3); /* Override text color */
+    border: 1px solid var(--accent1); /* Override border */
+}
+
 ul {
-    background-color: var(--body); /* Override default background */
+    background-color: var(--transparent1); /* Override default background */
     color: var(--accent2); /* Override text color */
     border: 1px dashed var(--accent2); /* Override border */
 }
@@ -77,7 +84,7 @@ ul {
 
 .card {
     border-color: var(--accent1);
-    background-color: var(--tp_accent1);
+    background-color: var(--transparent2);
     color: var(--accent1);
     box-shadow: 0 4px 8px rgba(0,0,0,1);
 }
@@ -104,21 +111,21 @@ ul {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, 0);
+    transform: translate(-50%, -50%);
     color: var(--accent2);
-    background-color: var(--tp_accent2);
-    min-width: 250px;
-    border-color: var(--accent2);
+    background-color: var(--transparent2);
+    min-width: auto;
+    border-color: var(--accent3);
     box-shadow: 0 4px 8px rgba(0,0,0,1);
 }
 
 .toast-header {
+    background-color: var(--accent3);
     color: var(--body);
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0.5rem 0.75rem;
-    background-color: var(--accent2);
 }
 
 .toast-body {

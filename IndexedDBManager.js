@@ -1,4 +1,4 @@
-class IndexedDBManager {
+export class IndexedDBManager {
     constructor(dbName, storeName) {
         this.dbName = dbName;
         this.storeName = storeName;
@@ -79,5 +79,38 @@ class IndexedDBManager {
             };
             request.onerror = () => reject(request.error);
         });
+    }
+
+    // Export data from IndexedDB to CSV
+    async exportToCSV() {
+        try {
+            const data = await this.getAll();  // Wait for the promise to resolve
+
+            // Check if there is data
+            if (data.length === 0) {
+                return;
+            }
+
+            // Convert to CSV format
+            const headers = Object.keys(data[0]);
+            const rows = data.map(item => {
+                return headers.map(header => `"${item[header]}"`).join(',');
+            });
+
+            // Prepare CSV string
+            const csvContent = [headers.join(','), ...rows].join('\n');
+
+            // Create a Blob from the CSV string
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${this.storeName}_data_PWA-Gym.csv`;
+            link.click();
+
+            // Clean up after download
+            URL.revokeObjectURL(link.href);
+        } catch (error) {
+            console.error('Error exporting to CSV:', error);
+        }
     }
 }

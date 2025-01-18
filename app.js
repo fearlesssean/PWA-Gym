@@ -1,5 +1,10 @@
+// import IndexedDB Manager
+import { IndexedDBManager } from "./IndexedDBManager.js";
+
 const workoutContainer = document.getElementById('workout-container');
 const subtitle = document.getElementById('subtitle');
+const dbManager = new IndexedDBManager("WorkoutDB", "logs");
+dbManager.init().then(() => console.log("Database initialized"));
 
 window.onload = () => {
     // Load saved data on page load
@@ -8,8 +13,6 @@ window.onload = () => {
     const savedCycle = localStorage.getItem('cycle') || 'A1';
     const savedDay = localStorage.getItem('day') || 'Monday';
     // Initialize the database
-    const dbManager = new IndexedDBManager("WorkoutDB", "logs");
-    dbManager.init().then(() => console.log("Database initialized"));
 
     // Select workout cycle and day
     const savedayBtn = document.getElementById('day-btn');
@@ -30,7 +33,7 @@ window.onload = () => {
     }
     if (logsBtn) {
         logsBtn.addEventListener('click', () => {
-            getAllData();
+            dbManager.exportToCSV();
         });
     }
     if (saveBenchBtn) {
@@ -246,64 +249,12 @@ window.onload = () => {
             console.log(`Data added with ID: ${id} and timestamp: ${data.timestamp}`);
         });
     }
-    // Toast alert
-    function showToast(message, title = 'New Status') {
-        // Create main header element
-        const header = document.createElement('header');
-
-        // Create toast container
-        const toastDiv = document.createElement('div');
-        toastDiv.classList.add('toast', 'show');
-
-        // Create toast header
-        const toastHeader = document.createElement('div');
-        toastHeader.classList.add('toast-header');
-
-        // Create title element
-        const strongTitle = document.createElement('strong');
-        strongTitle.textContent = title;
-
-        // Create close button
-        const closeButton = document.createElement('button');
-        closeButton.type = 'button';
-        closeButton.classList.add('btn-close');
-        closeButton.setAttribute('data-bs-dismiss', 'toast', '');
-
-        // Create toast body
-        const toastBody = document.createElement('div');
-        toastBody.classList.add('toast-body');
-
-        // Create message paragraph
-        const messagePara = document.createElement('p');
-        messagePara.textContent = message;
-
-        // Assemble the toast
-        toastHeader.appendChild(strongTitle);
-        toastHeader.appendChild(closeButton);
-        toastBody.appendChild(messagePara);
-        toastDiv.appendChild(toastHeader);
-        toastDiv.appendChild(toastBody);
-        header.appendChild(toastDiv);
-
-        // Add to document
-        document.body.appendChild(header);
-
-        // Remove toast after 3 seconds
-        setTimeout(() => {
-            header.remove();
-        }, 3000);
-
-        // Handle close button click
-        closeButton.addEventListener('click', () => {
-            header.remove();
-        });
-    }
 
     // Button actions
     function getData() {
         const id = parseInt(document.getElementById("getId").value, 10);
         dbManager.get(id).then((data) => {
-            console.log("Retrieved data:", data);
+            console.log("Retrieved data:", JSON.stringify(data));
         });
     }
 
@@ -313,13 +264,6 @@ window.onload = () => {
         const age = parseInt(document.getElementById("updateAge").value, 10);
         dbManager.update({ id, name, age }).then(() => {
             console.log(`Data with ID ${id} updated`);
-        });
-    }
-
-    function deleteData(dataID) {
-        dataID = parseInt(dataID, 10);
-        dbManager.delete(dataID).then(() => {
-            console.log(`Data with ID ${dataID} deleted`);
         });
     }
 
@@ -337,8 +281,72 @@ window.onload = () => {
             }
         });
     }
+    getAllData();
+}
 
-    function getAllData() {
+// Toast alert
+function showToast(message, title = 'New Status') {
+    // Create main header element
+    const header = document.createElement('header');
+
+    // Create toast container
+    const toastDiv = document.createElement('div');
+    toastDiv.classList.add('toast', 'show');
+
+    // Create toast header
+    const toastHeader = document.createElement('div');
+    toastHeader.classList.add('toast-header');
+
+    // Create title element
+    const strongTitle = document.createElement('strong');
+    strongTitle.textContent = title;
+
+    // Create close button
+    const closeButton = document.createElement('button');
+    closeButton.type = 'button';
+    closeButton.classList.add('btn-close');
+    closeButton.setAttribute('data-bs-dismiss', 'toast', '');
+
+    // Create toast body
+    const toastBody = document.createElement('div');
+    toastBody.classList.add('toast-body');
+
+    // Create message paragraph
+    const messagePara = document.createElement('p');
+    messagePara.textContent = message;
+
+    // Assemble the toast
+    toastHeader.appendChild(strongTitle);
+    toastHeader.appendChild(closeButton);
+    toastBody.appendChild(messagePara);
+    toastDiv.appendChild(toastHeader);
+    toastDiv.appendChild(toastBody);
+    header.appendChild(toastDiv);
+
+    // Add to document
+    document.body.appendChild(header);
+
+    // Remove toast after 3 seconds
+    setTimeout(() => {
+        header.remove();
+    }, 3000);
+
+    // Handle close button click
+    closeButton.addEventListener('click', () => {
+        header.remove();
+    });
+}
+
+function deleteData(dataID) {
+    dataID = parseInt(dataID, 10);
+    dbManager.delete(dataID).then(() => {
+        console.log(`Data with ID ${dataID} deleted`);
+    });
+}
+
+function getAllData() {
+    // Check if we're on the account.html page
+    if (window.location.pathname.includes('logs.html')) {
         dbManager.getAll().then((data) => {
             const dataList = document.getElementById('dataList');
 
@@ -399,28 +407,28 @@ window.onload = () => {
                         for (let i = 1; i <= reps.length; i++) {
                             if (item[`set${i}`]) {
                                 sets.push(`
-                                    <li class="list-group-item">
-                                        <span class="fw-bold">${reps[i - 1]}X @ </span> ${item[`set${i}`]} lbs
-                                    </li>
-                                `);
+                                <li class="list-group-item">
+                                    <span class="fw-bold">${reps[i - 1]}X @ </span> ${item[`set${i}`]} lbs
+                                </li>
+                            `);
                             }
                         }
 
                         // Set the inner HTML for the log entry
                         logsDiv.innerHTML = `
-                            <div class="card-body">
-                                <h2>${item.title}</h2>
-                                <p class="card-text"><span class="fw-bold">${date}</span></p>
-                            </div>
-                            <ul class="text-start p-3">
-                                ${sets.join('<hr>')}
-                            </ul>
-                            <div class="card-body text-end">
-                                <button class="delete-btn btn btn-l" data-id="${item.id}">
-                                    <i class="bi bi-trash"></i> Delete
-                                </button>
-                            </div>
-                        `;
+                        <div class="card-body">
+                            <h2>${item.title}</h2>
+                            <p class="card-text"><span class="fw-bold">${date}</span></p>
+                        </div>
+                        <ul class="text-start p-3">
+                            ${sets.join('<hr>')}
+                        </ul>
+                        <div class="card-body text-end">
+                            <button class="delete-btn btn btn-l" data-id="${item.id}">
+                                <i class="bi bi-trash"></i> Delete
+                            </button>
+                        </div>
+                    `;
 
                         // Append the log entry to the data list
                         dataList.appendChild(logsDiv);
@@ -442,7 +450,6 @@ window.onload = () => {
         });
     }
 }
-
 //Register the service worker
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/PWA-Gym/service-worker.js', { scope: '/PWA-Gym/' })

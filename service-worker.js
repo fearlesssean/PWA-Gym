@@ -28,7 +28,7 @@ self.addEventListener('fetch', (event) => {
 
   // Only handle requests under this app's scope
   if (!requestUrl.pathname.startsWith(APP_SCOPE)) {
-    console.log(`[Service Worker] ${APP_NAME}: Ignoring request outside app scope:`, requestUrl.pathname);
+    console.log(`[Service Worker] ${APP_NAME}: Ignoring request outside app scope:`, JSON.stringify(requestUrl.pathname));
     return;
   }
 
