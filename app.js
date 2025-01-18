@@ -47,13 +47,7 @@ window.onload = () => {
             showToast('Squat Max was updated', 'New Status!');
         });
     }
-    if (cycleBtn) {
-        cycleBtn.addEventListener('click', () => {
-            const selectCycle = document.getElementById('select-cycle') || 'A1';
-            localStorage.setItem('cycle', selectCycle.value);
-            showToast('Cycle was updated', 'New Status!');
-        });
-    }
+
     if (savedayBtn) {
         savedayBtn.addEventListener('click', () => {
             const selectDay = document.getElementById('select-day') || 'Monday';
@@ -75,8 +69,33 @@ window.onload = () => {
             return response.json();
         })
         .then(data => {
+            if (cycleBtn) {
+                // Get the keys of the cycles object
+                const cycleKeys = Object.keys(data.cycles);
+
+                // Target the <select> element by its ID
+                const selectElement = document.getElementById("select-cycle");
+
+                // Loop through the keys to create and append <option> elements
+                cycleKeys.forEach(key => {
+                    const option = document.createElement("option");
+                    option.value = key; // The value attribute of the option
+                    option.textContent = key; // The text displayed in the dropdown
+                    option.selected = key === savedCycle;
+                    selectElement.appendChild(option);
+                });
+
+                // SAVE - Action for when CycleBtn clicked
+                cycleBtn.addEventListener('click', () => {
+                    const selectCycle = document.getElementById('select-cycle') || 'A1';
+                    localStorage.setItem('cycle', selectCycle.value);
+                    showToast('Cycle was updated', 'New Status!');
+                });
+            }
             // Access the cycles workout
             const workoutCycles = data.cycles[savedCycle];
+
+
             // Access the day workout
             const selectedWorkout = data.workouts[savedDay];
 
@@ -182,7 +201,9 @@ window.onload = () => {
                 col.appendChild(card);
 
                 // Append the card to the workoutContainer
-                workoutContainer.appendChild(col);
+                if (workoutContainer) {
+                    workoutContainer.appendChild(col);
+                }
             }
 
             // Create form for selected cycle
@@ -320,7 +341,6 @@ window.onload = () => {
     function getAllData() {
         dbManager.getAll().then((data) => {
             const dataList = document.getElementById('dataList');
-            console.log("All data:", data);
 
             if (data.length === 0) {
                 dataList.innerHTML = '<div class="card card-body"><p>No workout logs saved..</p></div>';
@@ -336,8 +356,14 @@ window.onload = () => {
                 .then((workouts) => {
                     // Create and append user elements
                     data.forEach((item) => {
-                        // Strip everything before the two letters (e.g., "Bench A1" -> "A1")
-                        const strippedTitle = item.title.replace(/.*\s([A-Z]\d{1,2})$/, '$1');
+                        // Normalize title for lookup
+                        let strippedTitle;
+                        if (item.title === "Bench MAX" || item.title === "Squat MAX") {
+                            strippedTitle = "MAX"; // Normalize to match JSON key
+                        } else {
+                            // Strip everything before the two letters (e.g., "Bench A1" -> "A1")
+                            strippedTitle = item.title.replace(/.*\s([A-Z]\d{1,2})$/, '$1');
+                        }
 
                         // Extract reps from either "cycles" or "workouts" based on the stripped title
                         let reps = [];
