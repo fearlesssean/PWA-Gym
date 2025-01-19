@@ -16,22 +16,49 @@
 
 <body>
     <div class="container">
-        <div class="card card-body my-3">
-            <h1>Account</h1>
-            <hr>
-            <h3 id="subtitle"></h3>
+        <div class="card card-body my-3 p-5">
+            <div class="card mb-4 py-3">
+                <h1><i>STATUS</i></h1>
+            </div>
+            <p>DAY: <i id="saved_day">DAY</i></p>
+            <div class="row">
+                <div class="col">
+                    <h1 id="level">1</h1>
+                    <p>LEVEL</p>
+                </div>
+                <div class="col">
+                    <h1 id="rank">E</h1>
+                    <p>RANK</p>
+                </div>
+                <div class="col">
+                    <h1 id="saved_cycle">E</h1>
+                    <p>CYCLE</p>
+                </div>
+            </div>
+            <div class="card py-3">
+                <div class="row">
+                    <div class="col">
+                        <p id="saved_bench_max">BENCH MAX: (Not Saved)</p>
+                        <p id="saved_squat_max">SQUAT MAX: (Not Saved)</p>
+                    </div>
+                    <div class="col">
+                        <h1 id="strength" class="bi bi-person-arms-up"></h1>
+                        <p>STRENGTH</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card card-body">
-            <p>You can update your cycle, day and one-rep max below.</p>
-            <div class="input-group mt-2">
+        <div class="card card-body p-5">
+            <i class="card p-3 mb-3">You can update your cycle, day and one-rep max below.</i>
+            <div class="input-group mb-3">
                 <span class="input-group-text">Cycle</span>
                 <select id="select-cycle" class="form-select" type="text" name="select-cycle">
                 </select>
                 <span class="input-group-text">
-                    <button id="cycle-btn" class="btn bi bi-floppy-fill"> Save</button>
+                    <button id="cycle-btn" class="btn bi bi-floppy-fill"></button>
                 </span>
             </div>
-            <div class="input-group mt-2">
+            <div class="input-group mb-3">
                 <span class="input-group-text">Day</span>
                 <select id="select-day" class="form-select" type="text" name="select-day">
                     <option selected>Monday</option>
@@ -40,32 +67,32 @@
                     <option>Friday</option>
                 </select>
                 <span class="input-group-text">
-                    <button id="day-btn" class="btn bi bi-floppy-fill"> Save</button>
+                    <button id="day-btn" class="btn bi bi-floppy-fill"></button>
                 </span>
             </div>
-            <div class="input-group mt-2">
+            <div class="input-group mb-3">
                 <span class="input-group-text">Bench Max</span>
                 <input id="bench-max" class="form-control" type="number" min="45" max="900" placeholder=".lbs">
                 <span class="input-group-text">
-                    <button id="saveBenchBtn" class="btn bi bi-floppy-fill"> Save</button>
+                    <button id="saveBenchBtn" class="btn bi bi-floppy-fill"></button>
                 </span>
             </div>
-            <div class="input-group mt-2">
+            <div class="input-group">
                 <span class="input-group-text">Squat Max</span>
                 <input id="squat-max" class="form-control" type="number" min="45" max="900" placeholder=".lbs">
                 <span class="input-group-text">
-                    <button id="saveSquatBtn" class="btn bi bi-floppy-fill"> Save</button>
+                    <button id="saveSquatBtn" class="btn bi bi-floppy-fill"></button>
                 </span>
             </div>
         </div>
-            <nav class="fixed-bottom p-2">
-                <a class="btn btn-lg me-2 bi bi-journal-text float-start" href="workouts.html"></a>
-                <a class="btn btn-lg me-2 bi bi-bar-chart-line float-start" href="logs.html"></a>
-                <a class="btn btn-lg me-2 bi bi-gear float-start" href="account.html"></a>
-                <a class="btn btn-lg me-2 bi bi-info-circle float-start" href="index.html"></a>
-            </nav>
-        </div>
-        <script type="module" src="app.js"></script>
-    </body>
-    
-    </html>
+        <nav class="fixed-bottom p-2">
+            <a class="btn btn-lg me-2 bi bi-journal-text float-start" href="workouts.html"></a>
+            <a class="btn btn-lg me-2 bi bi-bar-chart-line float-start" href="logs.html"></a>
+            <a class="btn btn-lg me-2 bi bi-person-bounding-box float-start" href="account.html"></a>
+            <a class="btn btn-lg me-2 bi bi-info-circle float-start" href="index.html"></a>
+        </nav>
+    </div>
+    <script type="module" src="app.js"></script>
+</body>
+
+</html>

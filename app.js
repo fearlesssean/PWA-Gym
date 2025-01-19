@@ -11,6 +11,11 @@ dbManager.init().then(() => console.log("Database initialized"));
 // Get Element id's
 const workoutContainer = document.getElementById('workout-container');
 const subtitle = document.getElementById('subtitle');
+const savedCycleElement = document.getElementById('saved_cycle');
+const savedDayElement = document.getElementById('saved_day');
+const savedBenchMaxElement = document.getElementById('saved_bench_max');
+const savedSquatMaxElement = document.getElementById('saved_squat_max');
+const strengthElement = document.getElementById('strength');
 const dataList = document.getElementById('dataList');
 
 // Load saved data on page load
@@ -49,9 +54,6 @@ function local_save(btn_id, value_id, item, toast) {
 }
 
 // Display saved data
-if (subtitle) {
-    subtitle.innerHTML = `Cycle: ${savedCycle}, Day: ${savedDay}`;
-}
 if (toastBtn) {
     toastBtn.addEventListener('click', () => {
         showToast('This is a toast test...', 'New Status!');
@@ -62,6 +64,25 @@ if (logsBtn) {
         dbManager.exportToCSV();
     });
 }
+if (subtitle) {
+    subtitle.innerHTML = `<p>DAY: ${savedDay}</p><p>CYCLE: ${savedCycle}</p>`;
+}
+if (savedCycleElement) {
+    savedCycleElement.innerHTML = savedCycle;
+}
+if (savedDayElement) {
+    savedDayElement.innerHTML = savedDay;
+}
+if (savedBenchMaxElement) {
+    savedBenchMaxElement.innerHTML = `BENCH MAX: ${savedBenchMax}`;
+}
+if (savedSquatMaxElement) {
+    savedSquatMaxElement.innerHTML = `SQUAT MAX: ${savedSquatMax}`;
+}
+if (strengthElement) {
+    strengthElement.innerHTML = `${parseInt(savedBenchMax) + parseInt(savedSquatMax)}` || 45;
+}
+
 
 
 window.onload = () => {
