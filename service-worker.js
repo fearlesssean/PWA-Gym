@@ -1,15 +1,15 @@
 const APP_NAME = 'PWA-Gym'; // Unique identifier for the app
 const CACHE_VERSION = 'v1';
 const CACHE_NAME = `${APP_NAME}-cache-${CACHE_VERSION}`;
-const APP_SCOPE = '/PWA-Gym/';
+const APP_SCOPE = '/PWA-Gym/';  // Scope of your app hosted on GitHub Pages
+
+// Define URLs to cache
 const urlsToCache = [
-  //`${APP_SCOPE}`,                 // Cache the root directory
-  `${APP_SCOPE}index.html`,       // Main page
-  `${APP_SCOPE}manifest.json`,    // Manifest file
-  `${APP_SCOPE}IndexedDBManager.js`,
-  `${APP_SCOPE}icons/icon-192x192.png`, // Icons
+  `${APP_SCOPE}`,               // Cache the root directory
+  `${APP_SCOPE}index.html`,     // Main page
+  `${APP_SCOPE}manifest.json`,  // Manifest file
+  `${APP_SCOPE}icons/icon-192x192.png`,  // Icons
   `${APP_SCOPE}icons/icon-512x512.png`,
-  `${APP_SCOPE}solo-leveling.jpeg`,
 ];
 
 // Install event: Cache app resources
@@ -36,6 +36,12 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Prevent caching of non-necessary resources like third-party requests
+  if (requestUrl.hostname !== location.hostname) {
+    console.log(`[Service Worker] ${APP_NAME}: Ignoring external request`, requestUrl.href);
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
@@ -46,9 +52,10 @@ self.addEventListener('fetch', (event) => {
       console.log(`[Service Worker] ${APP_NAME}: Fetching from network`, requestUrl.pathname);
       return fetch(event.request)
         .then((networkResponse) => {
+          // Check if the response is cacheable
           if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
             console.warn(`[Service Worker] ${APP_NAME}: Network response uncacheable`, requestUrl.pathname);
-            return networkResponse;
+            return networkResponse; // Return uncacheable response
           }
 
           // Cache the fetched response for future requests
