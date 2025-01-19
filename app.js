@@ -251,22 +251,6 @@ window.onload = () => {
     }
 
     // Button actions
-    function getData() {
-        const id = parseInt(document.getElementById("getId").value, 10);
-        dbManager.get(id).then((data) => {
-            console.log("Retrieved data:", JSON.stringify(data));
-        });
-    }
-
-    function updateData() {
-        const id = parseInt(document.getElementById("updateId").value, 10);
-        const name = document.getElementById("updateName").value;
-        const age = parseInt(document.getElementById("updateAge").value, 10);
-        dbManager.update({ id, name, age }).then(() => {
-            console.log(`Data with ID ${id} updated`);
-        });
-    }
-
     function getWorkoutTitle(title, set) {
         return dbManager.getAll().then((data) => {
             if (data.length === 0) {
@@ -400,7 +384,7 @@ function getAllData() {
 
                         // Create a container for the log entry
                         const logsDiv = document.createElement('div');
-                        logsDiv.classList.add('log-entry', 'card', 'mb-2');
+                        logsDiv.classList.add('log-entry', 'card', 'mb-2', 'px-5', 'pe-5');
 
                         // Build the content dynamically
                         const sets = [];
@@ -450,13 +434,24 @@ function getAllData() {
         });
     }
 }
-//Register the service worker
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/PWA-Gym/service-worker.js', { scope: '/PWA-Gym/' })
-        .then((registration) => {
-            console.log('Service Worker registered with scope:', registration.scope);
-        })
-        .catch((error) => {
-            console.error('Service Worker registration failed:', error);
-        });
+// Ensure the correct base path for service worker registration
+let url_path = '/';
+if (window.location.pathname.includes('/PWA-Gym/')) {
+    url_path = '/PWA-Gym/';
 }
+
+// Register the service worker with a scope
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker
+            .register(`${url_path}service-worker.js`, { scope: url_path }) // Add the scope here
+            .then(registration => {
+                console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch(error => {
+                console.log('Service Worker registration failed:', error);
+            });
+    });
+}
+
+
