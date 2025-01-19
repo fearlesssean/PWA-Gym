@@ -8,8 +8,8 @@ dbManager.init().then(() => console.log("Database initialized"));
 
 window.onload = () => {
     // Load saved data on page load
-    const savedBenchMax = localStorage.getItem('benchMax') || 45;
-    const savedSquatMax = localStorage.getItem('squatMax') || 45;
+    const savedBenchMax = parseFloat(localStorage.getItem('benchMax')) || 45;
+    const savedSquatMax = parseFloat(localStorage.getItem('squatMax')) || 45;
     const savedCycle = localStorage.getItem('cycle') || 'A1';
     const savedDay = localStorage.getItem('day') || 'Monday';
     // Initialize the database
@@ -251,19 +251,14 @@ window.onload = () => {
     }
 
     // Button actions
-    function getWorkoutTitle(title, set) {
-        return dbManager.getAll().then((data) => {
-            if (data.length === 0) {
-                console.log("No data");
-                return null; // Return null to indicate no match
-            } else {
-                const matchingItem = data.find(item => item.title === title);
-                if (matchingItem) {
-                    return matchingItem[set] || null; // Return the set value or null if it doesn't exist
-                }
-                return null; // Return null if no matching item is found
-            }
-        });
+    async function getWorkoutTitle(title, set) {
+        const data = await dbManager.getAll();
+        if (data.length === 0) {
+            console.log("No data");
+            return null;
+        }
+        const matchingItem = data.find(item => item.title === title);
+        return matchingItem ? matchingItem[set] || null : null;
     }
     getAllData();
 }
