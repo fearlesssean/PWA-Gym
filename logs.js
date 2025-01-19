@@ -1,6 +1,6 @@
 import { showToast } from "./toast.js";
 
-export function getAllData(dbManager, dataList) {
+export async function getAllData(dbManager, dataList) {
     // Check if we're on the account.html page
     dbManager.getAll().then((data) => {
         if (data.length === 0) {

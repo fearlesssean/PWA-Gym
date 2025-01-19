@@ -19,7 +19,7 @@ const savedSquatMax = local_load('squatMax', 45);
 const savedCycle = local_load('cycle', 'A1');
 const savedDay = local_load('day', 'Monday');
 
-// Select workout cycle and day
+// Get buttons
 const cycleBtn = document.getElementById('cycle-btn');
 const logsBtn = document.getElementById('logs-btn');
 const toastBtn = document.getElementById('toast-btn');
@@ -118,9 +118,18 @@ window.onload = () => {
         .catch(error => {
             console.error('Error fetching JSON:', error);
         });
-    if (dataList) {
-        getAllData(dbManager, dataList);
-    }
+}
+
+// Initialize database and fetch data
+if (dataList) {
+    dataList.innerHTML = '<div class="card card-body"><p>Loading...</p></div>';
+    dbManager.init().then(() => {
+        try {
+            getAllData(dbManager, dataList);
+        } catch (error) {
+            console.error('Error calling getAllData:', error);
+        }
+    });
 }
 
 // Ensure the correct base path for service worker registration
