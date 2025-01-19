@@ -1,5 +1,7 @@
-// import IndexedDB Manager
 import { IndexedDBManager } from "./IndexedDBManager.js";
+import { showToast } from "./toast.js";
+import { createForm } from "./form.js";
+import { registerServiceWorker } from "./sw.js";
 
 const workoutContainer = document.getElementById('workout-container');
 const subtitle = document.getElementById('subtitle');
@@ -12,7 +14,6 @@ window.onload = () => {
     const savedSquatMax = parseFloat(localStorage.getItem('squatMax')) || 45;
     const savedCycle = localStorage.getItem('cycle') || 'A1';
     const savedDay = localStorage.getItem('day') || 'Monday';
-    // Initialize the database
 
     // Select workout cycle and day
     const savedayBtn = document.getElementById('day-btn');
@@ -98,129 +99,21 @@ window.onload = () => {
             // Access the cycles workout
             const workoutCycles = data.cycles[savedCycle];
 
-
             // Access the day workout
             const selectedWorkout = data.workouts[savedDay];
 
-            function createForm(exercise, selectedMax, addTitle) {
-                const col = document.createElement('div');
-                col.classList.add('col-md-6');
-
-                const card = document.createElement('div');
-                card.classList.add('card', 'shadow-sm');
-
-                const cardBody = document.createElement('div');
-                cardBody.classList.add('card-body');
-
-                let exerciseTitle = exercise.title;
-
-                if (addTitle != null) {
-                    exerciseTitle = `${addTitle} ${exercise.title}`;
-                }
-
-                const cardTitle = document.createElement('h2');
-                cardTitle.textContent = exerciseTitle;
-                cardBody.appendChild(cardTitle);
-
-                const form = document.createElement('form');
-                const formId = exerciseTitle.replace(/[^a-zA-Z0-9-_]/g, '-').toLowerCase();
-                form.id = formId;
-
-                // create hidden title input
-                const inputTitle = document.createElement('input');
-                inputTitle.type = 'text';
-                inputTitle.name = 'title';
-                inputTitle.value = exerciseTitle;
-                inputTitle.hidden = true;
-
-                let i = 0;
-                for (const rep in exercise.reps) {
-                    const formGroup = document.createElement('div');
-                    formGroup.classList.add('mb-3');
-
-                    const inputGroup = document.createElement('div');
-                    inputGroup.classList.add('input-group', 'mt-2');
-
-                    const span1 = document.createElement('span');
-                    span1.textContent = `${exercise.reps[rep]} x`;
-                    span1.classList.add('input-group-text');
-
-                    const input = document.createElement('input');
-                    input.type = 'number';
-                    input.name = `set${i + 1}`;
-                    input.classList.add('form-control');
-                    input.required = true;
-                    input.min = 0;
-                    input.max = 900;
-
-                    const span2 = document.createElement('span');
-                    span2.textContent = '.lbs';
-                    span2.classList.add('input-group-text');
-
-                    inputGroup.appendChild(span1);
-                    inputGroup.appendChild(input);
-                    inputGroup.appendChild(span2);
-                    formGroup.appendChild(inputGroup);
-                    form.appendChild(inputTitle);
-                    form.appendChild(formGroup);
-
-                    if (exercise.percents) {
-                        // Calculate percentage-based input value
-                        const inputValue = Math.round(exercise.percents[rep] * selectedMax / 5) * 5;
-                        input.value = inputValue;
-                    } else {
-                        // Fetch saved data asynchronously
-                        (async () => {
-                            const savedValue = await getWorkoutTitle(exerciseTitle, input.name);
-                            input.placeholder = savedValue !== null ? savedValue : '';
-                        })();
-                    }
-
-                    i++;
-                }
-
-                // Add a submit button
-                const submitButton = document.createElement('button');
-                submitButton.type = 'submit'; // Make it a submit button
-                submitButton.textContent = ' Save';
-                submitButton.classList.add('btn', 'mt-3', 'bi', 'bi-floppy-fill');
-
-                // Form submission handler
-                form.addEventListener('submit', (event) => {
-                    event.preventDefault(); // Prevent default submission
-                    if (form.checkValidity()) {
-                        // Only proceed if the form is valid
-                        addData(formId);
-                    } else {
-                        form.reportValidity(); // Show validation errors
-                    }
-                });
-
-                form.appendChild(submitButton);
-
-                // Append form to card body
-                cardBody.appendChild(form);
-                card.appendChild(cardBody);
-                col.appendChild(card);
-
-                // Append the card to the workoutContainer
-                if (workoutContainer) {
-                    workoutContainer.appendChild(col);
-                }
-            }
-
             // Create form for selected cycle
             if (savedDay == 'Monday') {
-                createForm(workoutCycles, savedBenchMax, 'Bench');
+                createForm(workoutCycles, savedBenchMax, 'Bench', workoutContainer, dbManager);
             }
             else if (savedDay == 'Friday') {
-                createForm(workoutCycles, savedSquatMax, 'Squat');
+                createForm(workoutCycles, savedSquatMax, 'Squat', workoutContainer, dbManager);
             }
 
             // Loop through each exercise in selectedWorkout
             for (const exerciseKey in selectedWorkout) {
                 const exercise = selectedWorkout[exerciseKey];
-                createForm(exercise, null, null);
+                createForm(exercise, null, null, workoutContainer, dbManager);
             };
         })
         .catch(error => {
@@ -261,59 +154,6 @@ window.onload = () => {
         return matchingItem ? matchingItem[set] || null : null;
     }
     getAllData();
-}
-
-// Toast alert
-function showToast(message, title = 'New Status') {
-    // Create main header element
-    const header = document.createElement('header');
-
-    // Create toast container
-    const toastDiv = document.createElement('div');
-    toastDiv.classList.add('toast', 'show');
-
-    // Create toast header
-    const toastHeader = document.createElement('div');
-    toastHeader.classList.add('toast-header');
-
-    // Create title element
-    const strongTitle = document.createElement('strong');
-    strongTitle.textContent = title;
-
-    // Create close button
-    const closeButton = document.createElement('button');
-    closeButton.type = 'button';
-    closeButton.classList.add('btn-close');
-    closeButton.setAttribute('data-bs-dismiss', 'toast', '');
-
-    // Create toast body
-    const toastBody = document.createElement('div');
-    toastBody.classList.add('toast-body');
-
-    // Create message paragraph
-    const messagePara = document.createElement('p');
-    messagePara.textContent = message;
-
-    // Assemble the toast
-    toastHeader.appendChild(strongTitle);
-    toastHeader.appendChild(closeButton);
-    toastBody.appendChild(messagePara);
-    toastDiv.appendChild(toastHeader);
-    toastDiv.appendChild(toastBody);
-    header.appendChild(toastDiv);
-
-    // Add to document
-    document.body.appendChild(header);
-
-    // Remove toast after 3 seconds
-    setTimeout(() => {
-        header.remove();
-    }, 3000);
-
-    // Handle close button click
-    closeButton.addEventListener('click', () => {
-        header.remove();
-    });
 }
 
 function deleteData(dataID) {
@@ -433,20 +273,7 @@ function getAllData() {
 let url_path = '/';
 if (window.location.pathname.includes('/PWA-Gym/')) {
     url_path = '/PWA-Gym/';
-}
-
-// Register the service worker with a scope
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker
-            .register(`${url_path}service-worker.js`, { scope: url_path }) // Add the scope here
-            .then(registration => {
-                console.log('Service Worker registered with scope:', registration.scope);
-            })
-            .catch(error => {
-                console.log('Service Worker registration failed:', error);
-            });
-    });
+    registerServiceWorker(url_path);
 }
 
 
