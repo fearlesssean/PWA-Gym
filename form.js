@@ -102,7 +102,6 @@ export function createForm(exercise, selectedMax, addTitle, workoutContainer, db
 async function getWorkoutTitle(title, set, dbManager) {
     const data = await dbManager.getAll();
     if (data.length === 0) {
-        console.log("No data");
         return null;
     }
     const matchingItem = data.find(item => item.title === title);
