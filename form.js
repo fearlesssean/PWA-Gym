@@ -96,13 +96,7 @@ export function createForm(exercise, selectedMax, addTitle, workoutContainer, db
                     reps: exercise.reps,
                 }
             };
-
-            // Calculate and add XP
-            const xpGained = xpManager.calculateWorkoutXP(workout);
-            xpManager.addXP(xpGained);
-
             addData(formId, dbManager);
-            showToast(`XP Gained: ${xpGained}`, `Total XP: ${xpManager.getCurrentXP()}`);
         } else {
             form.reportValidity();
         }
@@ -143,6 +137,8 @@ function addData(formId, dbManager) {
     data.timestamp = new Date().toISOString();
 
     dbManager.add(data).then((id) => {
+        // Calculate and add XP
+        xpManager.saveWorkout();
         showToast(`Workout saved! ${new Date(data.timestamp).toLocaleString()}`, `New Status!`);
         console.log(`Data added with ID: ${id} and timestamp: ${data.timestamp}`);
     });
