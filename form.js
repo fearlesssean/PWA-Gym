@@ -1,4 +1,8 @@
 import { showToast } from "./toast.js";
+import { WorkoutXPManager } from './ranking.js';
+
+const xpManager = new WorkoutXPManager();
+
 
 // form.js
 export function createForm(exercise, selectedMax, addTitle, workoutContainer, dbManager) {
@@ -85,11 +89,25 @@ export function createForm(exercise, selectedMax, addTitle, workoutContainer, db
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         if (form.checkValidity()) {
+            // Create a valid workout object
+            const workout = {
+                [exercise.title]: {
+                    sets: exercise.reps.length,
+                    reps: exercise.reps,
+                }
+            };
+
+            // Calculate and add XP
+            const xpGained = xpManager.calculateWorkoutXP(workout);
+            xpManager.addXP(xpGained);
+
             addData(formId, dbManager);
+            showToast(`XP Gained: ${xpGained}`, `Total XP: ${xpManager.getCurrentXP()}`);
         } else {
             form.reportValidity();
         }
     });
+
 
     form.appendChild(submitButton);
     cardBody.appendChild(form);
@@ -122,7 +140,7 @@ function addData(formId, dbManager) {
         }
     });
 
-    data.timestamp = new Date().toISOString(); 
+    data.timestamp = new Date().toISOString();
 
     dbManager.add(data).then((id) => {
         showToast(`Workout saved! ${new Date(data.timestamp).toLocaleString()}`, `New Status!`);

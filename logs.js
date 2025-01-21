@@ -18,12 +18,8 @@ export async function getAllData(dbManager, dataList) {
                 data.forEach((item) => {
                     // Normalize title for lookup
                     let strippedTitle;
-                    if (item.title === "Bench MAX" || item.title === "Squat MAX") {
-                        strippedTitle = "MAX"; // Normalize to match JSON key
-                    } else {
-                        // Strip everything before the two letters (e.g., "Bench A1" -> "A1")
-                        strippedTitle = item.title.replace(/.*\s([A-Z]\d{1,2})$/, '$1');
-                    }
+                    // Strip everything after the space (e.g., "Bench A1" -> "A1")
+                    strippedTitle = item.title.replace(/.*\s(.*)$/, '$1');
 
                     // Extract reps from either "cycles" or "workouts" based on the stripped title
                     let reps = [];

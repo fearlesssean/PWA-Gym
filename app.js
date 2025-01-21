@@ -3,6 +3,7 @@ import { showToast } from "./toast.js";
 import { createForm } from "./form.js";
 import { getAllData } from "./logs.js";
 import { registerServiceWorker } from "./sw.js";
+import { WorkoutXPManager } from './ranking.js';
 
 // Initialized data base
 const dbManager = new IndexedDBManager("WorkoutDB", "logs");
@@ -17,6 +18,12 @@ const savedBenchMaxElement = document.getElementById('saved_bench_max');
 const savedSquatMaxElement = document.getElementById('saved_squat_max');
 const strengthElement = document.getElementById('strength');
 const dataList = document.getElementById('dataList');
+const level = document.getElementById('level');
+const rank = document.getElementById('rank');
+const progressBar = document.getElementById('progress-bar');
+const progressBarText = document.getElementById('progress-bar-text');
+const rankBar = document.getElementById('rank-bar');
+const rankBarText = document.getElementById('rank-bar-text');
 
 // Load saved data on page load
 const savedBenchMax = local_load('benchMax', 45);
@@ -34,6 +41,12 @@ local_save('saveBenchBtn', 'bench-max', 'benchMax', 'Bench Max was updated');
 local_save('saveSquatBtn', 'squat-max', 'squatMax', 'Squat Max was updated');
 local_save('day-btn', 'select-day', 'day', 'Day was updated');
 local_save('cycle-btn', 'select-cycle', 'cycle', 'Cycle was updated');
+
+// Get numerical level and progress
+const xpManager = new WorkoutXPManager();
+const levelInfo = xpManager.getCurrentLevel();
+const rankInfo = xpManager.getCurrentLetterRank();
+const currentXP = xpManager.getCurrentXP();
 
 // Local load function
 function local_load(item, default_value) {
@@ -81,6 +94,20 @@ if (savedSquatMaxElement) {
 }
 if (strengthElement) {
     strengthElement.innerHTML = `${parseInt(savedBenchMax) + parseInt(savedSquatMax)}` || 45;
+}
+if (level) {
+    level.innerHTML = levelInfo.level;
+}
+if (rank) {
+    rank.textContent = rankInfo.rank;
+}
+if (progressBar) {
+    progressBar.style.width = `${levelInfo.progress}%`;
+    progressBarText.textContent = `${levelInfo.progress}%`;
+}
+if (rankBar) {
+    rankBar.style.width = `${rankInfo.progress}%`;
+    rankBarText.textContent = `${rankInfo.progress}%`;
 }
 
 
