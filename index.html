@@ -17,20 +17,85 @@
 <body>
     <div class="container">
         <div class="card card-body mb-3">
-            <h1>Welcome to PWA-Gym</h1>
+            <h1>PWA-Gym</h1>
+            <i>Workout App</i>
+            <img src="qrcode_fearlesssean.github.io.png" class="rounded mx-auto d-block" style="max-width: 250px;">
         </div>
         <div class="card card-body mb-3">
-            <p><i>This is a workout app to track your progress and guide you with progressive workout cycles.</i></p>
-            <button id="toast-btn">Toast</button>
+            <h1>How to Use PWA-Gym</h1>
+            <p>Welcome to PWA-Gym! This app helps you track your workouts and follows progressive workout cycles.</p>
+            <hr>
+            <div class="tutorial-section">
+                <div class="tutorial-step">
+                    <h4>1. Getting Started</h4>
+                    <ul class="text-start p-3">
+                        <li class="list-group-item">On the Account page input and save your 1-RM for both bench and squat.</li><hr>
+                        <li class="list-group-item">If you are unsure what your max should be, use the 1-RM calculator to help determine what it should be.</li>
+                    </ul>
+                </div>
+                <hr>
+                <div class="tutorial-step">
+                    <h4>2. Navigation</h4>
+                    <ul class="text-start p-3">
+
+                        <li class="list-group-item">
+                            <span class="fw-bold bi bi-journal-text"> Workouts:</span> View and complete your workout
+                            programs
+                        </li>
+                        <hr>
+                        <li class="list-group-item">
+                            <span class="fw-bold bi bi-bar-chart-line"> Logs:</span> Track your workout history and
+                            progress
+                        </li>
+                        <hr>
+                        <li class="list-group-item">
+                            <span class="fw-bold bi bi-person-bounding-box"> Account:</span> Manage your personal
+                            settings
+                        </li>
+                        <hr>
+                        <li class="list-group-item">
+                            <span class="fw-bold bi bi-info-circle"> Info:</span> Access app information and guidance
+                        </li>
+
+                    </ul>
+                </div>
+                <hr>
+                <div class="tutorial-step">
+                    <h4>3. Proper Weights</h4>
+                    <p>Your 1RM may need to be adjusted as you progress through your training cycle. Use the following
+                        guidelines to determine adjustments based on your Week 1 performance:</p>
+                    <ul class="text-start p-3">
+                        <li class="list-group-item">If you achieve 8–9 reps on the last set, stick with your current
+                            1RM—this indicates you're on track.</li>
+                        <hr>
+                        <li class="list-group-item">If you achieve only 6–7 reps, decrease your 1RM by 10 pounds for the
+                            next week's workout to maintain proper progression.</li>
+                        <hr>
+                        <li class="list-group-item">If you can complete 12 or more reps, increase your 1RM by 10 pounds
+                            for the next workout to continue challenging yourself.</li>
+                        <hr>
+                    </ul>
+                    <p>These adjustments ensure your training intensity stays aligned with your goals.</p>
+                </div>
+                <hr>
+                <div class="tutorial-step">
+                    <h4>4. Tips for Success</h4>
+                    <ul class="text-start p-4">
+                        <li>Follow the progressive cycle structure</li>
+                        <li>Log your workouts consistently</li>
+                        <li>Adjust weights as recommended</li>
+                        <li>Focus on proper form over weight</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-    </div>
-    <nav class="fixed-bottom p-2">
-        <a class="btn btn-lg me-2 bi bi-journal-text float-start" href="workouts.html"></a>
-        <a class="btn btn-lg me-2 bi bi-bar-chart-line float-start" href="logs.html"></a>
-        <a class="btn btn-lg me-2 bi bi-person-bounding-box float-start" href="account.html"></a>
-        <a class="btn btn-lg me-2 bi bi-info-circle float-start" href="index.html"></a>
-    </nav>
-    <script type="module" src="app.js"></script>
+        <nav class="fixed-bottom p-2">
+            <a class="btn btn-lg me-2 bi bi-journal-text float-start" href="workouts.html"></a>
+            <a class="btn btn-lg me-2 bi bi-bar-chart-line float-start" href="logs.html"></a>
+            <a class="btn btn-lg me-2 bi bi-person-bounding-box float-start" href="account.html"></a>
+            <a class="btn btn-lg me-2 bi bi-info-circle float-start" href="index.html"></a>
+        </nav>
+        <script type="module" src="app.js"></script>
 </body>
 
 </html>

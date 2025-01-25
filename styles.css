@@ -148,3 +148,28 @@ ul {
 .toast.show {
     display: block;
 }
+
+.tutorial-section {
+    padding: 15px 0;
+}
+
+.tutorial-step {
+    margin-bottom: 20px;
+}
+
+.tutorial-step h4 {
+    color: var(--accent3);
+    margin-bottom: 10px;
+}
+
+.tutorial-step ul {
+    padding-left: 20px;
+}
+
+.tutorial-step li {
+    margin-bottom: 8px;
+}
+
+.bi {
+    margin-right: 5px;
+}
