@@ -56,7 +56,7 @@
                 </div>
             </div>
         </div>
-        <div class="card card-body p-3">
+        <div class="card card-body p-3 mb-3">
             <i class="card p-3 mb-3">You can update your cycle, day and one-rep max below.</i>
             <div class="input-group mb-3">
                 <span class="input-group-text">Cycle</span>
@@ -93,14 +93,39 @@
                 </span>
             </div>
         </div>
-        <nav class="fixed-bottom p-2">
-            <a class="btn btn-lg me-2 bi bi-journal-text float-start" href="workouts.html"></a>
-            <a class="btn btn-lg me-2 bi bi-bar-chart-line float-start" href="logs.html"></a>
-            <a class="btn btn-lg me-2 bi bi-person-bounding-box float-start" href="account.html"></a>
-            <a class="btn btn-lg me-2 bi bi-info-circle float-start" href="index.html"></a>
-        </nav>
-    </div>
-    <script type="module" src="app.js"></script>
+        <div class="card card-body p-3">
+            <i class="card p-3 mb-3">
+                <h1>Max Calculator</h1>You can calculate your one-rep max below.
+            </i>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Total Reps</span>
+                <input id="reps-input" class="form-control" type="number" min="1" max="900" placeholder="rep count">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Weight</span>
+                <input id="weight-input" class="form-control" type="number" min="1" max="900" placeholder=".lbs">
+            </div>
+            <div class="card mt-3 p-3">
+                <div class="row">
+                    <div class="col">
+                        <button id="calculate-btn" class="btn">
+                            <h1><i class="bi bi-calculator text-dark">Calculate</i></h1>
+                        </button>
+                    </div>
+                    <div class="col">
+                        <h1 id="max-output">?</h1>
+                        <p>1-REP MAX</p>
+                    </div>
+                </div>
+            </div>
+            <nav class="fixed-bottom p-2">
+                <a class="btn btn-lg me-2 bi bi-journal-text float-start" href="workouts.html"></a>
+                <a class="btn btn-lg me-2 bi bi-bar-chart-line float-start" href="logs.html"></a>
+                <a class="btn btn-lg me-2 bi bi-person-bounding-box float-start" href="account.html"></a>
+                <a class="btn btn-lg me-2 bi bi-info-circle float-start" href="index.html"></a>
+            </nav>
+        </div>
+        <script type="module" src="app.js"></script>
 </body>
 
 </html>

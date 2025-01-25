@@ -36,6 +36,7 @@ const cycleBtn = document.getElementById('cycle-btn');
 const logsBtn = document.getElementById('logs-btn');
 const toastBtn = document.getElementById('toast-btn');
 const completeBtn = document.getElementById('complete-btn');
+const calculateBtn = document.getElementById('calculate-btn');
 
 // Local save buttons    
 local_save('saveBenchBtn', 'bench-max', 'benchMax', 'Bench Max was updated');
@@ -108,6 +109,16 @@ if (levelBar) {
 if (rankBar) {
     rankBar.style.width = `${progressToNextRank}%`;
     rankBarText.textContent = `${progressToNextRank}%`;
+}
+// Calculate Max
+if (calculateBtn) {
+    calculateBtn.addEventListener('click', () => {
+        const weight_input = document.getElementById('weight-input').value;
+        const reps_input = document.getElementById('reps-input').value;
+        let max = Math.round(weight_input * (1 + (reps_input / 30)));
+        max = Math.round(max / 5) * 5;
+        document.getElementById('max-output').innerHTML = `${max}.lbs`;
+    });
 }
 
 window.onload = () => {
