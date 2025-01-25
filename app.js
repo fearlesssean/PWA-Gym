@@ -35,6 +35,7 @@ const savedDay = local_load('day', 'Monday');
 const cycleBtn = document.getElementById('cycle-btn');
 const logsBtn = document.getElementById('logs-btn');
 const toastBtn = document.getElementById('toast-btn');
+const completeBtn = document.getElementById('complete-btn');
 
 // Local save buttons    
 local_save('saveBenchBtn', 'bench-max', 'benchMax', 'Bench Max was updated');
@@ -109,8 +110,6 @@ if (rankBar) {
     rankBarText.textContent = `${progressToNextRank}%`;
 }
 
-
-
 window.onload = () => {
     // Clear the workout workoutContainer
     if (workoutContainer) {
@@ -125,9 +124,22 @@ window.onload = () => {
             return response.json();
         })
         .then(data => {
+            const cycleKeys = Object.keys(data.cycles);
+            const dayKeys = Object.keys(data.workouts);
+            if (completeBtn) {
+                completeBtn.addEventListener('click', () => {
+                    let next_cycle = cycleKeys[(cycleKeys.indexOf(savedCycle) + 1) % cycleKeys.length];
+                    let next_day = dayKeys[(dayKeys.indexOf(savedDay) + 1) % dayKeys.length];
+                    if (savedDay == 'Friday') {
+                        localStorage.setItem("cycle", next_cycle);
+                    }
+                    localStorage.setItem("day", next_day);
+                    showToast('Workout completed!', 'New Status!');
+                    location.reload(); 
+                });
+            }
             if (cycleBtn) {
                 // Get the keys of the cycles object
-                const cycleKeys = Object.keys(data.cycles);
 
                 // Target the <select> element by its ID
                 const selectElement = document.getElementById("select-cycle");
